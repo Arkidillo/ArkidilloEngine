@@ -18,23 +18,21 @@ public class Gui {
 
     public Gui(){
         frame = new JFrame();   //Create a new JFrame and JPanel. JPanel necessary to actually draw things to.
-        panel = new JPanel();
-        this.width = 1920;     //Set the height and width of the screen here from the constructor parameter.
-        this.height = 1080;
+        panel = new JPanel(null);
+        this.width = 1000;     //Set the height and width of the screen here from the constructor parameter.
+        this.height = 800;
 
         //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setMinimumSize(new Dimension(1920, 1080));
         frame.setUndecorated(true);
 
-        //frame.setSize(width, height);   //Set the window's size, set close on X, set resizable to false, set the title of the window.
+        frame.setMinimumSize(new Dimension(width, height));   //Set the window's size, set close on X, set resizable to false, set the title of the window.
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setFocusable(true);
+        frame.setFocusable(false);
         frame.setLocationRelativeTo(null);
 
-        panel.setMinimumSize(new Dimension(1920, 1080));
+        panel.setSize(new Dimension(1920, 1080));
         panel.setFocusable(true);
-        panel.setLayout(null);
         frame.getContentPane().add(panel);   //Adds the panel to the frame.
 
         frame.setVisible(true);
@@ -42,15 +40,15 @@ public class Gui {
     }
 
     public void addKeyListener(KeyListener listener){
-        frame.addKeyListener(listener);
-        //or panel.addKeyListener(listener)?
+        //frame.addKeyListener(listener);
+        panel.addKeyListener(listener);
     }
 
     public void add(int x, int y, String fileName){
         JLabel label = new JLabel(new ImageIcon(".\\assets\\" + fileName));
         label.setLocation(x, y);
         panel.add(label);
-        //frame.pack();
+        frame.pack();
         //frame.setSize(1920, 1080);
     }
 

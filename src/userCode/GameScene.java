@@ -11,8 +11,11 @@ public class GameScene extends Scene{
         Sprite sprite = new Sprite(101,101,"Untitled.jpg");
     }
 
+    @Override
     public void update(){
-
+        if(Kernel.keyListener.isKeyPressed(10)){
+            System.out.println("Enter pressed");
+        }
     }
 
 

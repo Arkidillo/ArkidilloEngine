@@ -11,9 +11,7 @@ public abstract class Scene {
 
     public SceneData sceneData = new SceneData();
 
-    public void update(){
-
-    }
+    public abstract void update();
 
     public abstract void onCreate();
 

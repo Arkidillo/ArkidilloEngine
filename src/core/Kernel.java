@@ -33,12 +33,17 @@ public class Kernel implements Runnable{
     }
 
     public void update(){   //Called once per frame update, master update function to call update of all other objects in the scene.
-        if(currentScene != null && currentScene.sceneData != null) {
-            for (GameObject obj : currentScene.sceneData.gameObjects) {    //Goes through all sprites, and start a new thread to update all positions.
-                Thread t = new Thread(obj);
-                t.start();
+        if(currentScene != null) {
+            currentScene.update();
+            if(currentScene.sceneData != null) {
+                for (GameObject obj : currentScene.sceneData.gameObjects) {    //Goes through all sprites, and start a new thread to update all positions.
+                    Thread t = new Thread(obj);
+                    t.start();
+                }
             }
         }
+
+        gui.panel.repaint();
 
         //for() Check for collisions next.
     }

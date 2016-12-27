@@ -20,7 +20,6 @@ public class Sprite extends GameObject implements Runnable{
     public Sprite(int x, int y, String fileName){
         super(x,y);
         Kernel.gui.add(x, y, fileName);
-        //paintComponent(g);
 
         Kernel.currentScene.sceneData.add(this);
     }
