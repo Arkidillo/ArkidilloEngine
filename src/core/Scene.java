@@ -5,7 +5,11 @@ package core;
  */
 public abstract class Scene {
 
-    public SceneData sceneData = new SceneData();
+    public SceneData sceneData;
+
+    public Scene(){
+        sceneData = new SceneData();
+    }
 
     public abstract void update();
 

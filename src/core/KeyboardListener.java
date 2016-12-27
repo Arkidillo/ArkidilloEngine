@@ -18,6 +18,10 @@ public class KeyboardListener implements KeyListener{
         for(GameObject gameObj: objectsListening){
             gameObj.keyTyped(e.getKeyCode());
         }
+
+        for(Scene scene: scenesListening){
+            scene.keyTyped(e.getKeyCode());
+        }
     }
 
     @Override
@@ -28,6 +32,10 @@ public class KeyboardListener implements KeyListener{
         for(GameObject gameObj: objectsListening){
             gameObj.keyPressed(e.getKeyCode());
         }
+
+        for(Scene scene: scenesListening){
+            scene.keyPressed(e.getKeyCode());
+        }
     }
 
     @Override
@@ -36,6 +44,10 @@ public class KeyboardListener implements KeyListener{
 
         for(GameObject gameObj: objectsListening){
             gameObj.keyReleased(e.getKeyCode());
+        }
+
+        for(Scene scene: scenesListening){
+            scene.keyReleased(e.getKeyCode());
         }
     }
 

@@ -36,14 +36,13 @@ public class Kernel implements Runnable{
         if(currentScene != null) {
             currentScene.update();
             if(currentScene.sceneData != null) {
-                for (GameObject obj : currentScene.sceneData.gameObjects) {    //Goes through all sprites, and start a new thread to update all positions.
+                for (Sprite obj : currentScene.sceneData.sprites) {    //Goes through all sprites, and start a new thread to update all positions.
                     Thread t = new Thread(obj);
                     t.start();
                 }
             }
         }
-
-        gui.panel.repaint();
+        //gui.panel.repaint();
 
         //for() Check for collisions next.
     }

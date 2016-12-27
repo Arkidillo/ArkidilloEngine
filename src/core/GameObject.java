@@ -15,14 +15,6 @@ public class GameObject extends JLabel implements Runnable{
         TYPED, PRESSED, RELEASED
     }
 
-    public GameObject(int x, int y){
-        setLocation(x, y);
-    }
-
-    public GameObject(){
-        setLocation(0, 0);
-    }
-
     public void run(){
     }
 
