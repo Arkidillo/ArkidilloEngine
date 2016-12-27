@@ -7,9 +7,18 @@ import java.util.ArrayList;
  */
 public class SceneData {
     public ArrayList<GameObject> gameObjects = new ArrayList<>();
-    public Cell[][] map;
+    public Cell[][] map = new Cell[Kernel.gui.width][Kernel.gui.height];
 
-    public void add(Sprite obj){
+    public SceneData(){
+        for (int i = 0; i < map.length; i++){
+            for (int j = 0; j < map[0].length; j++){
+                map[i][j] = new Cell();
+            }
+        }
+    }
+
+    public void add(GameObject obj, int x, int y){
         gameObjects.add(obj);
+        map[x][y].add(obj);
     }
 }

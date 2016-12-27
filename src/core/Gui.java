@@ -23,17 +23,19 @@ public class Gui {
         this.height = 800;
 
         //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setUndecorated(true);
+        frame.setUndecorated(false);
 
-        frame.setMinimumSize(new Dimension(width, height));   //Set the window's size, set close on X, set resizable to false, set the title of the window.
+        //frame.setMinimumSize(new Dimension(width, height));   //Set the window's size, set close on X, set resizable to false, set the title of the window.
+        //frame.setPreferredSize(new Dimension(width, height));
+        frame.setSize(new Dimension(width, height));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setFocusable(false);
         frame.setLocationRelativeTo(null);
 
-        panel.setSize(new Dimension(1920, 1080));
+        panel.setSize(new Dimension(width, height));
         panel.setFocusable(true);
-        frame.getContentPane().add(panel);   //Adds the panel to the frame.
+        frame.add(panel);   //Adds the panel to the frame.
 
         frame.setVisible(true);
         panel.setVisible(true);
@@ -44,11 +46,9 @@ public class Gui {
         panel.addKeyListener(listener);
     }
 
-    public void add(int x, int y, String fileName){
-        JLabel label = new JLabel(new ImageIcon(".\\assets\\" + fileName));
-        label.setLocation(x, y);
+    public void add(JLabel label){
         panel.add(label);
-        frame.pack();
+        //frame.pack();
         //frame.setSize(1920, 1080);
     }
 

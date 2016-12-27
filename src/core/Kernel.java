@@ -48,5 +48,13 @@ public class Kernel implements Runnable{
         //for() Check for collisions next.
     }
 
+    public static void addListeningObject(GameObject o){
+        keyListener.addListeningObject(o);
+    }
+
+    public static void addListeningScene(Scene s){
+        keyListener.addListeningScene(s);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package core;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -10,18 +11,21 @@ import java.awt.image.RenderedImage;
 public class Sprite extends GameObject implements Runnable{
 
     int collisionId;
+    public Scene scene;
 
-    public Sprite(String fileName){
+    public Sprite(String fileName, Scene scene){
         super();
-        Kernel.gui.add(x, y, fileName);
-        Kernel.currentScene.sceneData.add(this);
+        this.scene = scene;
+        Kernel.gui.add(this);
+        scene.sceneData.add(this, getX(), getY());
     }
 
-    public Sprite(int x, int y, String fileName){
-        super(x,y);
-        Kernel.gui.add(x, y, fileName);
-
-        Kernel.currentScene.sceneData.add(this);
+    public Sprite(int x, int y, String fileName, Scene scene){
+        super(x, y);
+        this.scene = scene;
+        this.setIcon(new ImageIcon(".\\assets\\" + fileName));
+        Kernel.gui.add(this);
+        scene.sceneData.add(this, x, y);
     }
 
     @Override
