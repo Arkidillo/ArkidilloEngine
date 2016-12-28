@@ -1,5 +1,7 @@
 package core;
 
+import java.util.ConcurrentModificationException;
+
 /**
  * Created by Devin on 12/25/2016.
  */
@@ -18,12 +20,18 @@ public class Kernel implements Runnable{
 
     public void run(){
         long timeStart;
+        long sleepTime;
 
         while(true){
             timeStart = System.currentTimeMillis();
             update();
 
-            Helper.sleep((int)(frameDelay-(System.currentTimeMillis() - timeStart)));
+
+            if ((sleepTime = frameDelay-(System.currentTimeMillis())) > 0){
+                Helper.sleep(sleepTime);
+            } else {
+                Helper.sleep(0);
+            }
         }
     }
 
@@ -35,11 +43,15 @@ public class Kernel implements Runnable{
     public void update(){   //Called once per frame update, master update function to call update of all other objects in the scene.
         if(currentScene != null) {
             currentScene.update();
-            if(currentScene.spritesInScene != null) {
-                for (Sprite obj : currentScene.spritesInScene) {    //Goes through all sprites, and start a new thread to update all positions.
-                    Thread t = new Thread(obj);
-                    t.start();
+            try {
+                if (currentScene.spritesInScene != null) {
+                    for (Sprite obj : currentScene.spritesInScene) {    //Goes through all sprites, and start a new thread to update all positions.
+                        Thread t = new Thread(obj);
+                        t.start();
+                    }
                 }
+            } catch (ConcurrentModificationException e){
+
             }
         }
         //gui.panel.repaint();

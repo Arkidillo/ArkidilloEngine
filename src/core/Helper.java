@@ -8,6 +8,14 @@ package core;
 public class Helper {
 
 
+    public static void sleep(long milli){
+        try {
+            Thread.sleep((int)milli);
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
     public static void sleep(int milli){
         try {
             Thread.sleep(milli);

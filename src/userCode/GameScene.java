@@ -13,6 +13,10 @@ public class GameScene extends Scene{
     public void onCreate(){
        sprite = new Sprite(0,0,"Untitled.jpg",this);
        sprite2 = new Sprite(1920, 1080, "Untitled.jpg", this);
+
+       for(int i = 0; i < 100; i++){
+           new Sprite(i,i,"Untitled.jpg", this);
+       }
     }
 
     @Override
