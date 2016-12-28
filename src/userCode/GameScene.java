@@ -6,39 +6,35 @@ import core.*;
  */
 public class GameScene extends Scene{
 
-    public static Sprite sprite;
+    public Sprite sprite;
+    public Sprite sprite2;
 
     @Override
     public void onCreate(){
-       sprite = new Sprite(101,101,"Untitled.jpg",this);
-       //Kernel.addListeningScene(this);
+       sprite = new Sprite(0,0,"Untitled.jpg",this);
+       sprite2 = new Sprite(1920, 1080, "Untitled.jpg", this);
     }
 
     @Override
     public void update(){
         if(Kernel.keyListener.isKeyPressed(39)){
             sprite.setLocation(sprite.x + 5, sprite.y);
+            sprite2.setLocation(sprite2.x - 5, sprite2.y);
         }
 
         if(Kernel.keyListener.isKeyPressed(38)){
             sprite.setLocation(sprite.x, sprite.y - 5);
+            sprite2.setLocation(sprite2.x, sprite2.y + 5);
         }
 
         if(Kernel.keyListener.isKeyPressed(40)){
             sprite.setLocation(sprite.x, sprite.y + 5);
+            sprite2.setLocation(sprite2.x, sprite2.y - 5);
         }
 
         if(Kernel.keyListener.isKeyPressed(37)){
             sprite.setLocation(sprite.x - 5, sprite.y);
+            sprite2.setLocation(sprite2.x + 5, sprite2.y);
         }
     }
-
-    @Override
-    public void keyPressed(int keyCode){
-        /*if (keyCode == 39) {
-            sprite.setLocation(sprite.x + 10, sprite.y);
-        }*/
-    }
-
-
 }

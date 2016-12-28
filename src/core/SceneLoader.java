@@ -15,6 +15,7 @@ public class SceneLoader {
         Thread t = new Thread(kernel);
         t.start();
 
+
         Kernel.showScene(new GameScene());
 
         /*JFrame frame = new JFrame();

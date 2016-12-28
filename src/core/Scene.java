@@ -1,14 +1,16 @@
 package core;
 
+import java.util.ArrayList;
+
 /**
  * Created by Devin on 12/25/2016.
  */
 public abstract class Scene {
 
-    public SceneData sceneData;
+    public ArrayList<Sprite> spritesInScene;
 
     public Scene(){
-        sceneData = new SceneData();
+        spritesInScene = new ArrayList<>();
     }
 
     public abstract void update();

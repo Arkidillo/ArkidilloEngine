@@ -7,25 +7,27 @@ import java.util.ArrayList;
  */
 public class SceneData {
     public ArrayList<Sprite> sprites = new ArrayList<>();
-    public Cell[][] map = new Cell[3*Kernel.gui.width][3*Kernel.gui.height];
-    public int width;
-    public int height;
+    //public Cell[][] map = new Cell[3*Kernel.gui.width][3*Kernel.gui.height];
+    //public int width;
+    //public int height;
 
     public SceneData(){
-        width = Kernel.gui.width;
+        /*width = Kernel.gui.width;
         height = Kernel.gui.height;
 
-        for (int i = 0; i < map.length; i++){
-            for (int j = 0; j < map[0].length; j++){
+        for (int i = 0; i < 3*width; i++){
+            for (int j = 0; j < 3*height; j++){
                 map[i][j] = new Cell();
             }
-        }
+        }*/
     }
 
     public void add(Sprite obj){
         sprites.add(obj);
-        map[width + obj.x][height + obj.y].add(obj);
+       //map[width + obj.x][height + obj.y].add(obj);
     }
+
+    /*
 
     public Cell getCell(int x, int y){
         return map[x+Kernel.gui.width][y+Kernel.gui.height];
@@ -37,5 +39,5 @@ public class SceneData {
         }
 
         map[width + x2][height + y2].add(obj);
-    }
+    }*/
 }

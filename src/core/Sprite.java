@@ -19,7 +19,7 @@ public class Sprite extends JComponent implements Runnable{
         scene = s;
         image = ImageLoader.loadImage(fileName);
         Kernel.gui.add(this);
-        scene.sceneData.add(this);
+        scene.spritesInScene.add(this);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class Sprite extends JComponent implements Runnable{
 
     @Override
     public void setLocation(int x, int y){
-        scene.sceneData.moveSprite(this.x, this.y, x, y, this);
+        //scene.sceneData.moveSprite(this.x, this.y, x, y, this);
         this.x = x;
         this.y = y;
     }
