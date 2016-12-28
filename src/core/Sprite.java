@@ -11,6 +11,9 @@ public class Sprite extends JComponent implements Runnable{
     public Image image;
     public int x;
     public int y;
+    public int width;
+    public int height;
+    private boolean needToRedraw;
     public Scene scene;
 
     public Sprite(int x, int y, String fileName, Scene s){
@@ -20,24 +23,30 @@ public class Sprite extends JComponent implements Runnable{
         image = ImageLoader.loadImage(fileName);
         Kernel.gui.add(this);
         scene.spritesInScene.add(this);
+        width = image.getWidth(null);
+        height = image.getHeight(null);
+        needToRedraw = true;
     }
 
     @Override
     public void paintComponent(Graphics g){
         if(image == null) return;
 
-        Graphics2D g2d = (Graphics2D)g;
-
-        g2d.drawImage(image, x, y,null);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(image, x, y, null);
         g2d.fillRect(x, y, 10, 10);
         g2d.setColor(Color.RED);
+
     }
 
     public void update(){}
 
     public void run(){
         update();
-        repaint();
+        if(needToRedraw == true) {
+            repaint();
+            needToRedraw = false;
+        }
     }
 
     @Override
@@ -45,5 +54,6 @@ public class Sprite extends JComponent implements Runnable{
         //scene.sceneData.moveSprite(this.x, this.y, x, y, this);
         this.x = x;
         this.y = y;
+        needToRedraw = true;
     }
 }

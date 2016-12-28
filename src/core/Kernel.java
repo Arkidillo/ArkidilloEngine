@@ -27,7 +27,7 @@ public class Kernel implements Runnable{
             update();
 
 
-            if ((sleepTime = frameDelay-(System.currentTimeMillis())) > 0){
+            if ((sleepTime = frameDelay-(timeStart - System.currentTimeMillis())) > 0){
                 Helper.sleep(sleepTime);
             } else {
                 Helper.sleep(0);

@@ -26,9 +26,6 @@ public class Gui {
 
         width = frame.getWidth();
         height = frame.getHeight();
-
-        System.out.println("Width: " + width);
-        System.out.println("Height: " + height);
     }
 
     public void addKeyListener(KeyListener listener){
