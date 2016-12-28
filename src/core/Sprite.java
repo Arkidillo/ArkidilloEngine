@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class Sprite extends JComponent implements Runnable{
     public Image image;
     public String fileName;
-    public ArrayList<String> animationFrames = new ArrayList<>();
+    public ArrayList<Image> animationFrames = new ArrayList<>();
+    public ArrayList<Integer> animationDelays = new ArrayList<>();
     public int animationDelay;
-    public ArrayList<Integer> animationDelays = new ArrayList<Integer>();
     public int currentFrame;
     public int currentDelay;
     public boolean animate;
@@ -25,8 +25,7 @@ public class Sprite extends JComponent implements Runnable{
 
     //TODO: Resizable sprites
     //TODO: Collision detection
-    //TODO: Animations - Multiple animations based on a name?
-
+   
     public Sprite(int x, int y, String fileName, Scene s){
         this.x = x;
         this.y = y;
@@ -73,7 +72,6 @@ public class Sprite extends JComponent implements Runnable{
 
     @Override
     public void setLocation(int x, int y){
-        //scene.sceneData.moveSprite(this.x, this.y, x, y, this);
         this.x = x;
         this.y = y;
         needToRedraw = true;
@@ -91,7 +89,7 @@ public class Sprite extends JComponent implements Runnable{
         animationFrames.clear();
         currentFrame = 0;
         for(int i = 0; i < f.length; i++){
-            animationFrames.add(f[i]);
+            animationFrames.add(ImageLoader.loadImage(f[i]));
         }
     }
 
@@ -109,7 +107,10 @@ public class Sprite extends JComponent implements Runnable{
     }
 
     public void nextFrame(){//Sets the image to the next frame of the animation.
-        setImage(animationFrames.get((++currentFrame)%animationFrames.size()));
+        image = animationFrames.get((++currentFrame)%animationFrames.size());
+        width = image.getWidth(null);
+        height = image.getHeight(null);
+        needToRedraw = true;
     }
 
     public void advanceAnimation(){ //Advances the animation by 1 frame.
@@ -132,5 +133,32 @@ public class Sprite extends JComponent implements Runnable{
 
     public void stopAnimation(){
         animate = false;
+    }
+
+    public void resizeSprite(int width, int height){
+        image = ImageLoader.resizeImage(width, height, image);
+        this.width = width;
+        this.height = height;
+
+        needToRedraw = true;
+    }
+
+    public void resizeAnimation(int width, int height, boolean resizeDefaultImage){  //Resizes all of the images in the current animation image arraylist.
+        if(resizeDefaultImage) {
+            resizeSprite(width, height);
+        }
+
+        ArrayList<Image> newAnimations = new ArrayList<>();
+        for(int i = 0; i < animationFrames.size(); i++){
+            newAnimations.add(ImageLoader.resizeImage(width, height, animationFrames.get(i)));  //Add the resized images to a new array, in order of their animation
+        }
+        for (Image image1 : animationFrames = newAnimations);   //copy all of the new images back into the animationFrames, so the resized images will be used in the animation going further.
+
+        System.out.println("Number of frames: " + animationFrames.size());
+        needToRedraw = true;
+    }
+
+    public int getCurrentFrameNumber(){    //This will start at 0!
+        return currentFrame;
     }
 }

@@ -17,6 +17,7 @@ public class GameScene extends Scene{
 
        sprite.setAnimationDelay(30);
        sprite.setAnimationFrames(frames);
+       sprite.resizeAnimation(sprite.width * 2, sprite.height * 2, true);
 
     }
 

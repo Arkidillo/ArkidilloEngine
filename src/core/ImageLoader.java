@@ -19,4 +19,9 @@ public class ImageLoader {
 
         return img;
     }
+
+    public static Image resizeImage(int width, int height, Image image){
+        return image.getScaledInstance(width, height, Image.SCALE_DEFAULT);//Can be changed to fast or to smooth!s
+
+    }
 }
