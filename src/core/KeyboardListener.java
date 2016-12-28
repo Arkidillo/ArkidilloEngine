@@ -26,7 +26,9 @@ public class KeyboardListener implements KeyListener{
 
     @Override
     public void keyPressed(KeyEvent e) {
-        keys[e.getKeyCode()] = true;
+        if(e.getKeyCode() < 256) {
+            keys[e.getKeyCode()] = true;
+        }
 
         for(GameObject gameObj: objectsListening){
             gameObj.keyPressed(e.getKeyCode());
@@ -39,8 +41,9 @@ public class KeyboardListener implements KeyListener{
 
     @Override
     public void keyReleased(KeyEvent e) {
-        keys[e.getKeyCode()] = false;
-
+        if(e.getKeyCode() < 256) {
+            keys[e.getKeyCode()] = false;
+        }
         for(GameObject gameObj: objectsListening){
             gameObj.keyReleased(e.getKeyCode());
         }

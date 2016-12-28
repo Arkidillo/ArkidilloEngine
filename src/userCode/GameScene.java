@@ -11,34 +11,44 @@ public class GameScene extends Scene{
 
     @Override
     public void onCreate(){
-       sprite = new Sprite(0,0,"Untitled.jpg",this);
-       sprite2 = new Sprite(1920, 1080, "Untitled.jpg", this);
+       sprite = new Sprite(0,0,"linkFront.png", this);
 
-       for(int i = 0; i < 100; i++){
-           new Sprite(i,i,"Untitled.jpg", this);
-       }
+       String[] frames = {"linkFront.png", "linkFront2.png"};
+
+       sprite.setAnimationDelay(30);
+       sprite.setAnimationFrames(frames);
+
     }
 
     @Override
     public void update(){
         if(Kernel.keyListener.isKeyPressed(39)){
-            sprite.setLocation(sprite.x + 5, sprite.y);
-            sprite2.setLocation(sprite2.x - 5, sprite2.y);
+            sprite.setLocation(sprite.x + 2, sprite.y);
+            /*if(!sprite.fileName.equals("linkRight.png")){
+                sprite.setImage("linkRight.png");
+            }*/
         }
 
         if(Kernel.keyListener.isKeyPressed(38)){
-            sprite.setLocation(sprite.x, sprite.y - 5);
-            sprite2.setLocation(sprite2.x, sprite2.y + 5);
+            sprite.setLocation(sprite.x, sprite.y - 2);
+            /*if(!sprite.fileName.equals("linkBack.png")){
+                sprite.setImage("linkBack.png");
+            }*/
         }
 
         if(Kernel.keyListener.isKeyPressed(40)){
-            sprite.setLocation(sprite.x, sprite.y + 5);
-            sprite2.setLocation(sprite2.x, sprite2.y - 5);
+            sprite.setLocation(sprite.x, sprite.y + 2);
+            sprite.advanceAnimation();
+            /*if(!sprite.fileName.equals("linkFront.png")){
+                sprite.setImage("linkFront.png");
+            }*/
         }
 
         if(Kernel.keyListener.isKeyPressed(37)){
-            sprite.setLocation(sprite.x - 5, sprite.y);
-            sprite2.setLocation(sprite2.x + 5, sprite2.y);
+            sprite.setLocation(sprite.x - 2, sprite.y);
+            /*if(!sprite.fileName.equals("linkLeft.png")){
+                sprite.setImage("linkLeft.png");
+            }*/
         }
     }
 }
