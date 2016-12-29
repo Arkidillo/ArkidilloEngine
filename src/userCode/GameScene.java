@@ -14,10 +14,23 @@ public class GameScene extends Scene{
        sprite = new Sprite(0,0,"linkFront.png", this);
 
        String[] frames = {"linkFront.png", "linkFront2.png"};
+       String[] framesLeft = {"linkLeft.png", "linkLeft2.png"};
+       String[] framesRight = {"linkRight.png", "linkRight2.png"};
+       String[] framesBack = {"linkBack.png", "linkBack2.png"};
 
-       sprite.addAnimation(frames,30,sprite,1);
-       sprite.resizeAnimation(sprite.width * 2, sprite.height * 2, true, 1);
-       sprite.startAnimation(1);
+       sprite.addAnimation(framesRight,30,sprite,1);
+       sprite.addAnimation(framesBack, 30, sprite, 2);
+       sprite.addAnimation(frames,30,sprite,3);
+       sprite.addAnimation(framesLeft,30,sprite,4);
+
+
+       int resizedWidth = sprite.width * 2;
+       int resizedHeight = sprite.height * 2;
+
+       sprite.resizeAnimation(resizedWidth, resizedHeight, true, 1);
+       sprite.resizeAnimation(resizedWidth, resizedHeight, false, 2);
+       sprite.resizeAnimation(resizedWidth, resizedHeight, false, 3);
+       sprite.resizeAnimation(resizedWidth, resizedHeight, false, 4);
 
     }
 
@@ -25,6 +38,11 @@ public class GameScene extends Scene{
     public void update(){
         if(Kernel.keyListener.isKeyPressed(39)){
             sprite.setLocation(sprite.x + 2, sprite.y);
+            if(sprite.currentAnimation == 1) {
+                sprite.advanceAnimation(1);
+            } else {
+                sprite.resetAnimtion(1);
+            }
             /*if(!sprite.fileName.equals("linkRight.png")){
                 sprite.setImage("linkRight.png");
             }*/
@@ -32,22 +50,33 @@ public class GameScene extends Scene{
 
         if(Kernel.keyListener.isKeyPressed(38)){
             sprite.setLocation(sprite.x, sprite.y - 2);
-            /*if(!sprite.fileName.equals("linkBack.png")){
+            if(sprite.currentAnimation == 2) {
+                sprite.advanceAnimation(2);
+            } else {
+                sprite.resetAnimtion(2);
+            }/*if(!sprite.fileName.equals("linkBack.png")){
                 sprite.setImage("linkBack.png");
             }*/
         }
 
         if(Kernel.keyListener.isKeyPressed(40)){
             sprite.setLocation(sprite.x, sprite.y + 2);
-            //sprite.advanceAnimation(1);
-            /*if(!sprite.fileName.equals("linkFront.png")){
+            if(sprite.currentAnimation == 3) {
+                sprite.advanceAnimation(3);
+            } else {
+                sprite.resetAnimtion(3);
+            }/*if(!sprite.fileName.equals("linkFront.png")){
                 sprite.setImage("linkFront.png");
             }*/
         }
 
         if(Kernel.keyListener.isKeyPressed(37)){
             sprite.setLocation(sprite.x - 2, sprite.y);
-            /*if(!sprite.fileName.equals("linkLeft.png")){
+            if(sprite.currentAnimation == 4) {
+                sprite.advanceAnimation(4);
+            } else {
+                sprite.resetAnimtion(4);
+            }/*if(!sprite.fileName.equals("linkLeft.png")){
                 sprite.setImage("linkLeft.png");
             }*/
         }

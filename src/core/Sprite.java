@@ -91,6 +91,7 @@ public class Sprite extends JComponent implements Runnable{
 
     public void advanceAnimation(int animationId){ //Advances the animation by 1 frame.
         animations.get(animationId).advanceAnimation();
+        currentAnimation = animationId;
     }
 
     public void startAnimation(int animationId){
@@ -120,5 +121,10 @@ public class Sprite extends JComponent implements Runnable{
 
     public int getCurrentFrameNumber(int animationId){    //This will start at 0!
         return animations.get(animationId).getCurrentFrameNumber();
+    }
+
+    public void resetAnimtion(int animationId){
+        animations.get(animationId).resetAnimation();
+        currentAnimation = animationId;
     }
 }

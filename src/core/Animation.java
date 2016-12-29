@@ -87,11 +87,20 @@ public class Animation {
         }
         for (Image image1 : animationFrames = newAnimations);   //copy all of the new images back into the animationFrames, so the resized images will be used in the animation going further.
 
-        System.out.println("Number of frames: " + animationFrames.size());
         sprite.needToRedraw = true;
     }
 
     public int getCurrentFrameNumber(){    //This will start at 0!
         return currentFrame;
+    }
+
+    public void resetAnimation(){
+        currentFrame = 0;
+        if(animationDelay == 0){
+            currentDelay = animationDelays.get(0);
+        } else {
+            currentDelay = animationDelay;
+        }
+        sprite.image = animationFrames.get(0);
     }
 }
