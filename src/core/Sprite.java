@@ -3,6 +3,7 @@ package core;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Devin on 12/27/2016.
@@ -10,22 +11,20 @@ import java.util.ArrayList;
 public class Sprite extends JComponent implements Runnable{
     public Image image;
     public String fileName;
-    public ArrayList<Image> animationFrames = new ArrayList<>();
-    public ArrayList<Integer> animationDelays = new ArrayList<>();
-    public int animationDelay;
-    public int currentFrame;
-    public int currentDelay;
-    public boolean animate;
+
     public int x;
     public int y;
     public int width;
     public int height;
-    private boolean needToRedraw;
+    public boolean needToRedraw;
     public Scene scene;
+    public boolean animate;
+    public HashMap<Integer, Animation> animations = new HashMap<>();
+    public int currentAnimation;
 
     //TODO: Resizable sprites
     //TODO: Collision detection
-   
+
     public Sprite(int x, int y, String fileName, Scene s){
         this.x = x;
         this.y = y;
@@ -55,14 +54,7 @@ public class Sprite extends JComponent implements Runnable{
     public void run(){
         update();
         if (animate == true) {
-            if (--currentDelay == 0) {  //counts down the delay until you reach 0
-                nextFrame(); //Then you go to the next frame in the animation
-                if(animationDelays.size() != 0) {   //if you are using the dynamic frame delay, go to the next frame's delay
-                    currentDelay = animationDelays.get(currentFrame);
-                } else {//else, set the delay back up to the given frame delay amount
-                    currentDelay = animationDelay;
-                }
-            }
+            animations.get(currentAnimation).nextAnimationFrame();
         }
         if(needToRedraw == true) {
             repaint();
@@ -85,50 +77,29 @@ public class Sprite extends JComponent implements Runnable{
         needToRedraw = true;
     }
 
-    public void setAnimationFrames(String[] f){//Defines a set of images for which to use in the animation
-        animationFrames.clear();
-        currentFrame = 0;
-        for(int i = 0; i < f.length; i++){
-            animationFrames.add(ImageLoader.loadImage(f[i]));
-        }
+    public void addAnimation(String[] f, int delayFrames, Sprite sprite, int animationId){//Defines a set of images for which to use in the animation
+        animations.put(animationId, new Animation(f, delayFrames, sprite, animationId));
     }
 
-    public void setAnimationDelay(int frames){//Sets a constant delay through all the images
-        animationDelay = frames;
-        currentDelay = frames;
-        animationDelays.clear();    //Makes sure EITHER a single delay is used, or frame specific delays are used, not both!
+    public void addAnimation(String[] f, int[] delayFrames, Sprite sprite, int animationId){//Defines a set of images for which to use in the animation
+        animations.put(animationId, new Animation(f, delayFrames, sprite, animationId));
     }
 
-    public void setAnimationDelays(int[] delays){//Sets a different delay for each frame. The first delay is used after the first frame, the next delay is used after the next frame, and so forth.
-        animationDelays.clear();
-        for(int i = 0; i < delays.length; i++){
-            animationDelays.add(delays[i]);
-        }
+    public void nextFrame(int animationId){//Sets the image to the next frame of the animation.
+        animations.get(animationId).nextFrame();
     }
 
-    public void nextFrame(){//Sets the image to the next frame of the animation.
-        image = animationFrames.get((++currentFrame)%animationFrames.size());
-        width = image.getWidth(null);
-        height = image.getHeight(null);
-        needToRedraw = true;
+    public void advanceAnimation(int animationId){ //Advances the animation by 1 frame.
+        animations.get(animationId).advanceAnimation();
     }
 
-    public void advanceAnimation(){ //Advances the animation by 1 frame.
-        if (--currentDelay == 0) {  //counts down the delay until you reach 0
-            nextFrame(); //Then you go to the next frame in the animation
-            if(animationDelays.size() != 0) {   //if you are using the dynamic frame delay, go to the next frame's delay
-                currentDelay = animationDelays.get(currentFrame);
-            } else {//else, set the delay back up to the given frame delay amount
-                currentDelay = animationDelay;
-            }
-        }
-    }
-
-    public void startAnimation(){
-        if(animationDelays.size() != 0 && animationDelays.size() != animationFrames.size()){
+    public void startAnimation(int animationId){
+        Animation currAnim = animations.get(animationId);
+        if(currAnim.animationDelays.size() != 0 && currAnim.animationDelays.size() != currAnim.animationFrames.size()){
             System.out.println("WARNING: Number of frames, and number of frame specific delays are not equal!");
         }
         animate = true;
+        currentAnimation = animationId;
     }
 
     public void stopAnimation(){
@@ -143,22 +114,11 @@ public class Sprite extends JComponent implements Runnable{
         needToRedraw = true;
     }
 
-    public void resizeAnimation(int width, int height, boolean resizeDefaultImage){  //Resizes all of the images in the current animation image arraylist.
-        if(resizeDefaultImage) {
-            resizeSprite(width, height);
-        }
-
-        ArrayList<Image> newAnimations = new ArrayList<>();
-        for(int i = 0; i < animationFrames.size(); i++){
-            newAnimations.add(ImageLoader.resizeImage(width, height, animationFrames.get(i)));  //Add the resized images to a new array, in order of their animation
-        }
-        for (Image image1 : animationFrames = newAnimations);   //copy all of the new images back into the animationFrames, so the resized images will be used in the animation going further.
-
-        System.out.println("Number of frames: " + animationFrames.size());
-        needToRedraw = true;
+    public void resizeAnimation(int width, int height, boolean resizeDefaultImage, int animationId){  //Resizes all of the images in the current animation image arraylist.
+        animations.get(animationId).resizeAnimation(width, height, resizeDefaultImage);
     }
 
-    public int getCurrentFrameNumber(){    //This will start at 0!
-        return currentFrame;
+    public int getCurrentFrameNumber(int animationId){    //This will start at 0!
+        return animations.get(animationId).getCurrentFrameNumber();
     }
 }

@@ -15,9 +15,9 @@ public class GameScene extends Scene{
 
        String[] frames = {"linkFront.png", "linkFront2.png"};
 
-       sprite.setAnimationDelay(30);
-       sprite.setAnimationFrames(frames);
-       sprite.resizeAnimation(sprite.width * 2, sprite.height * 2, true);
+       sprite.addAnimation(frames,30,sprite,1);
+       sprite.resizeAnimation(sprite.width * 2, sprite.height * 2, true, 1);
+       sprite.startAnimation(1);
 
     }
 
@@ -39,7 +39,7 @@ public class GameScene extends Scene{
 
         if(Kernel.keyListener.isKeyPressed(40)){
             sprite.setLocation(sprite.x, sprite.y + 2);
-            sprite.advanceAnimation();
+            //sprite.advanceAnimation(1);
             /*if(!sprite.fileName.equals("linkFront.png")){
                 sprite.setImage("linkFront.png");
             }*/
