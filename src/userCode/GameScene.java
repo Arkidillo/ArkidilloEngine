@@ -41,7 +41,7 @@ public class GameScene extends Scene{
         if(Kernel.keyListener.isKeyPressed(39)){
             sprite.setLocation(sprite.x + 2, sprite.y);
             if(sprite.currentAnimation == 1) {
-                sprite.advanceAnimation(1);
+                sprite.nextAnimationFrame(1);
             } else {
                 sprite.resetAnimation(1);
             }
@@ -54,7 +54,7 @@ public class GameScene extends Scene{
         if(Kernel.keyListener.isKeyPressed(38)){
             sprite.setLocation(sprite.x, sprite.y - 2);
             if(sprite.currentAnimation == 2) {
-                sprite.advanceAnimation(2);
+                sprite.nextAnimationFrame(2);
             } else {
                 sprite.resetAnimation(2);
             }
@@ -68,7 +68,7 @@ public class GameScene extends Scene{
         if(Kernel.keyListener.isKeyPressed(40)){
             sprite.setLocation(sprite.x, sprite.y + 2);
             if(sprite.currentAnimation == 3) {
-                sprite.advanceAnimation(3);
+                sprite.nextAnimationFrame(3);
             } else {
                 sprite.resetAnimation(3);
             }
@@ -82,7 +82,7 @@ public class GameScene extends Scene{
         if(Kernel.keyListener.isKeyPressed(37)){
             sprite.setLocation(sprite.x - 2, sprite.y);
             if(sprite.currentAnimation == 4) {
-                sprite.advanceAnimation(4);
+                sprite.nextAnimationFrame(4);
             } else {
                 sprite.resetAnimation(4);
             }
@@ -95,8 +95,6 @@ public class GameScene extends Scene{
 
         if(flag == false){
             sprite.resetAllAnimations();
-            sprite.resetToDefault();
         }
-        System.out.println(sprite.currentAnimation);
     }
 }

@@ -21,7 +21,7 @@ public class Sprite extends JComponent implements Runnable{
     public Scene scene;
     public boolean animate;
     public HashMap<Integer, Animation> animations = new HashMap<>();
-    public ArrayList<Integer> animationIds = new ArrayList<>();
+    public ArrayList<Integer> animationIds = new ArrayList<>(); //Animation ID -1 is reserved for default.
     public int currentAnimation;
 
     //TODO: Resizable sprites
@@ -109,8 +109,8 @@ public class Sprite extends JComponent implements Runnable{
         animations.get(animationId).nextFrame();
     }
 
-    public void advanceAnimation(int animationId){ //Advances the animation by 1 frame.
-        animations.get(animationId).advanceAnimation();
+    public void nextAnimationFrame(int animationId){ //Advances the animation by 1 frame.
+        animations.get(animationId).nextAnimationFrame();
         currentAnimation = animationId;
     }
 
@@ -155,7 +155,6 @@ public class Sprite extends JComponent implements Runnable{
     public void resetAnimation(int animationId){
         animations.get(animationId).resetAnimation();
         currentAnimation = animationId;
-        needToRedraw = true;
     }
 
     public void selectAnimation(int animationId){   //Select which animation you would like to preform.
@@ -172,6 +171,8 @@ public class Sprite extends JComponent implements Runnable{
         for(int i = 0; i < animationIds.size(); i++){
             animations.get(animationIds.get(i)).resetAnimation();
         }
+
+        resetToDefault();
     }
 
     public void resetToDefault(){
@@ -181,6 +182,7 @@ public class Sprite extends JComponent implements Runnable{
 
         width = defaultImage.getWidth(null);
         height = defaultImage.getHeight(null);
+        currentAnimation = -1;
 
         needToRedraw = true;
     }

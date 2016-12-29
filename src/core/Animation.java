@@ -19,7 +19,6 @@ public class Animation {
         this.sprite = sprite;
         this.animationId = animationId;
 
-        animationFrames.clear();
         currentFrame = 0;
         for(int i = 0; i < f.length; i++){
             animationFrames.add(ImageLoader.loadImage(f[i]));
@@ -27,21 +26,17 @@ public class Animation {
 
         animationDelay = delayFrames;
         currentDelay = delayFrames;
-        animationDelays.clear();    //Makes sure EITHER a single delay is used, or frame specific delays are used, not both!
-
     }
 
     public Animation(String[] f, int[] delays, Sprite sprite, int animationId){
         this.sprite = sprite;
         this.animationId = animationId;
 
-        animationFrames.clear();
         currentFrame = 0;
         for(int i = 0; i < f.length; i++){
             animationFrames.add(ImageLoader.loadImage(f[i]));
         }
 
-        animationDelays.clear();
         for(int i = 0; i < delays.length; i++){
             animationDelays.add(delays[i]);
         }
@@ -63,17 +58,6 @@ public class Animation {
         sprite.width = sprite.image.getWidth(null);
         sprite.height = sprite.image.getHeight(null);
         sprite.needToRedraw = true;
-    }
-
-    public void advanceAnimation(){ //Advances the animation by 1 frame.
-        if (--currentDelay == 0) {  //counts down the delay until you reach 0
-            nextFrame(); //Then you go to the next frame in the animation
-            if(animationDelays.size() != 0) {   //if you are using the dynamic frame delay, go to the next frame's delay
-                currentDelay = animationDelays.get(currentFrame);
-            } else {//else, set the delay back up to the given frame delay amount
-                currentDelay = animationDelay;
-            }
-        }
     }
 
     public void resizeAnimation(int width, int height, boolean resizeDefaultImage){  //Resizes all of the images in the current animation image arraylist.
@@ -102,5 +86,6 @@ public class Animation {
             currentDelay = animationDelay;
         }
         sprite.image = animationFrames.get(0);
+        sprite.needToRedraw = true;
     }
 }
