@@ -78,7 +78,7 @@ public class Animation {
 
     public void resizeAnimation(int width, int height, boolean resizeDefaultImage){  //Resizes all of the images in the current animation image arraylist.
         if(resizeDefaultImage) {
-            sprite.resizeSprite(width, height);
+            sprite.resizeDefaultImage(width, height);
         }
 
         ArrayList<Image> newAnimations = new ArrayList<>();
@@ -94,7 +94,7 @@ public class Animation {
         return currentFrame;
     }
 
-    public void resetAnimation(){
+    public void resetAnimation(){   //Sets the currentAnimation to this animation, and sets it back to the first frame of the animation. Call this when you are just starting an animation from the beginning.
         currentFrame = 0;
         if(animationDelay == 0){
             currentDelay = animationDelays.get(0);

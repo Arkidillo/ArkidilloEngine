@@ -36,8 +36,8 @@ public class Kernel implements Runnable{
     }
 
     public static void showScene(Scene scene){
-        currentScene = scene;
         scene.onCreate();
+        currentScene = scene;
     }
 
     public void update(){   //Called once per frame update, master update function to call update of all other objects in the scene.

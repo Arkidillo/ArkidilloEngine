@@ -10,6 +10,7 @@ import java.util.HashMap;
  */
 public class Sprite extends JComponent implements Runnable{
     public Image image;
+    public Image defaultImage;
     public String fileName;
 
     public int x;
@@ -20,6 +21,7 @@ public class Sprite extends JComponent implements Runnable{
     public Scene scene;
     public boolean animate;
     public HashMap<Integer, Animation> animations = new HashMap<>();
+    public ArrayList<Integer> animationIds = new ArrayList<>();
     public int currentAnimation;
 
     //TODO: Resizable sprites
@@ -28,14 +30,26 @@ public class Sprite extends JComponent implements Runnable{
     public Sprite(int x, int y, String fileName, Scene s){
         this.x = x;
         this.y = y;
-        this.fileName = fileName;
         scene = s;
-        image = ImageLoader.loadImage(fileName);
+        setImage(fileName);
+        defaultImage = image;
         Kernel.gui.add(this);
         scene.spritesInScene.add(this);
-        width = image.getWidth(null);
-        height = image.getHeight(null);
-        needToRedraw = true;
+    }
+
+
+    //TODO: Finish this.
+    public Sprite(Sprite s){
+        image = s.image;
+        fileName = s.fileName;
+        x = s.x;
+        y = s.y;
+        width = s.width;
+        height = s.height;
+        needToRedraw = s.needToRedraw;
+        scene = s.scene;
+        animate = s.animate;
+        currentAnimation = s.currentAnimation;
     }
 
     @Override
@@ -77,12 +91,18 @@ public class Sprite extends JComponent implements Runnable{
         needToRedraw = true;
     }
 
+    public void redraw(){   //Redraws the sprite on the next frame.
+        needToRedraw = true;
+    }
+
     public void addAnimation(String[] f, int delayFrames, Sprite sprite, int animationId){//Defines a set of images for which to use in the animation
         animations.put(animationId, new Animation(f, delayFrames, sprite, animationId));
+        animationIds.add(animationId);
     }
 
     public void addAnimation(String[] f, int[] delayFrames, Sprite sprite, int animationId){//Defines a set of images for which to use in the animation
         animations.put(animationId, new Animation(f, delayFrames, sprite, animationId));
+        animationIds.add(animationId);
     }
 
     public void nextFrame(int animationId){//Sets the image to the next frame of the animation.
@@ -107,8 +127,17 @@ public class Sprite extends JComponent implements Runnable{
         animate = false;
     }
 
-    public void resizeSprite(int width, int height){
+    public void resizeCurrentImage(int width, int height){
         image = ImageLoader.resizeImage(width, height, image);
+        this.width = width;
+        this.height = height;
+
+        needToRedraw = true;
+    }
+
+    public void resizeDefaultImage(int width, int height){
+        image = ImageLoader.resizeImage(width, height, image);
+        defaultImage = image;
         this.width = width;
         this.height = height;
 
@@ -123,8 +152,36 @@ public class Sprite extends JComponent implements Runnable{
         return animations.get(animationId).getCurrentFrameNumber();
     }
 
-    public void resetAnimtion(int animationId){
+    public void resetAnimation(int animationId){
         animations.get(animationId).resetAnimation();
         currentAnimation = animationId;
+        needToRedraw = true;
+    }
+
+    public void selectAnimation(int animationId){   //Select which animation you would like to preform.
+        currentAnimation = animationId;
+        needToRedraw = true;
+    }
+
+    public void removeAnimation(int animationId){
+        animationIds.remove((Integer)animationId);
+        animations.remove(animationId);
+    }
+
+    public void resetAllAnimations(){
+        for(int i = 0; i < animationIds.size(); i++){
+            animations.get(animationIds.get(i)).resetAnimation();
+        }
+    }
+
+    public void resetToDefault(){
+        if(animationIds.size() != 0) {
+            image = defaultImage;
+        }
+
+        width = defaultImage.getWidth(null);
+        height = defaultImage.getHeight(null);
+
+        needToRedraw = true;
     }
 }

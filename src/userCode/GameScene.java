@@ -7,7 +7,7 @@ import core.*;
 public class GameScene extends Scene{
 
     public Sprite sprite;
-    public Sprite sprite2;
+    boolean flag = false;
 
     @Override
     public void onCreate(){
@@ -36,13 +36,16 @@ public class GameScene extends Scene{
 
     @Override
     public void update(){
+        flag = false;
+
         if(Kernel.keyListener.isKeyPressed(39)){
             sprite.setLocation(sprite.x + 2, sprite.y);
             if(sprite.currentAnimation == 1) {
                 sprite.advanceAnimation(1);
             } else {
-                sprite.resetAnimtion(1);
+                sprite.resetAnimation(1);
             }
+            flag = true;
             /*if(!sprite.fileName.equals("linkRight.png")){
                 sprite.setImage("linkRight.png");
             }*/
@@ -53,8 +56,11 @@ public class GameScene extends Scene{
             if(sprite.currentAnimation == 2) {
                 sprite.advanceAnimation(2);
             } else {
-                sprite.resetAnimtion(2);
-            }/*if(!sprite.fileName.equals("linkBack.png")){
+                sprite.resetAnimation(2);
+            }
+
+            flag = true;
+            /*if(!sprite.fileName.equals("linkBack.png")){
                 sprite.setImage("linkBack.png");
             }*/
         }
@@ -64,8 +70,11 @@ public class GameScene extends Scene{
             if(sprite.currentAnimation == 3) {
                 sprite.advanceAnimation(3);
             } else {
-                sprite.resetAnimtion(3);
-            }/*if(!sprite.fileName.equals("linkFront.png")){
+                sprite.resetAnimation(3);
+            }
+
+            flag = true;
+            /*if(!sprite.fileName.equals("linkFront.png")){
                 sprite.setImage("linkFront.png");
             }*/
         }
@@ -75,10 +84,19 @@ public class GameScene extends Scene{
             if(sprite.currentAnimation == 4) {
                 sprite.advanceAnimation(4);
             } else {
-                sprite.resetAnimtion(4);
-            }/*if(!sprite.fileName.equals("linkLeft.png")){
+                sprite.resetAnimation(4);
+            }
+
+            flag = true;
+            /*if(!sprite.fileName.equals("linkLeft.png")){
                 sprite.setImage("linkLeft.png");
             }*/
         }
+
+        if(flag == false){
+            sprite.resetAllAnimations();
+            sprite.resetToDefault();
+        }
+        System.out.println(sprite.currentAnimation);
     }
 }

@@ -1,10 +1,6 @@
 package core;
 
 import userCode.*;
-
-import javax.swing.*;
-import java.awt.*;
-
 /**
  * Created by Devin on 12/25/2016.
  */
