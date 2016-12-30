@@ -7,10 +7,13 @@ import core.*;
 public class GameScene extends Scene{
 
     public Sprite sprite;
+    public final int NUM_SPRITES = 20;
+    Sprite[] sprites = new Sprite[NUM_SPRITES];
     boolean flag = false;
 
     @Override
     public void onCreate(){
+        //Start load screen.
        sprite = new Sprite(0,0,"linkFront.png", this);
 
        String[] frames = {"linkFront.png", "linkFront2.png"};
@@ -23,7 +26,6 @@ public class GameScene extends Scene{
        sprite.addAnimation(frames,30,sprite,3);
        sprite.addAnimation(framesLeft,30,sprite,4);
 
-
        int resizedWidth = sprite.width * 2;
        int resizedHeight = sprite.height * 2;
 
@@ -32,6 +34,12 @@ public class GameScene extends Scene{
        sprite.resizeAnimation(resizedWidth, resizedHeight, false, 3);
        sprite.resizeAnimation(resizedWidth, resizedHeight, false, 4);
 
+        for(int i = 0; i < NUM_SPRITES; i++){
+            sprites[i] = new Sprite(sprite);
+            sprites[i].setLocation(i*32  + 32, sprite.y);
+        }
+
+        //End load screen.
     }
 
     @Override
@@ -40,10 +48,19 @@ public class GameScene extends Scene{
 
         if(Kernel.keyListener.isKeyPressed(39)){
             sprite.setLocation(sprite.x + 2, sprite.y);
+            for(int i = 0; i < NUM_SPRITES; i++){
+                sprites[i].setLocation(sprites[i].x + 2, sprites[i].y);
+            }
             if(sprite.currentAnimation == 1) {
                 sprite.nextAnimationFrame(1);
+                for(int i = 0; i < NUM_SPRITES; i++){
+                    sprites[i].nextAnimationFrame(1);
+                }
             } else {
                 sprite.resetAnimation(1);
+                for(int i = 0; i < NUM_SPRITES; i++){
+                    sprites[i].resetAnimation(1);
+                }
             }
             flag = true;
             /*if(!sprite.fileName.equals("linkRight.png")){
@@ -53,10 +70,19 @@ public class GameScene extends Scene{
 
         if(Kernel.keyListener.isKeyPressed(38)){
             sprite.setLocation(sprite.x, sprite.y - 2);
+            for(int i = 0; i < NUM_SPRITES; i++){
+                sprites[i].setLocation(sprites[i].x, sprites[i].y - 2);
+            }
             if(sprite.currentAnimation == 2) {
                 sprite.nextAnimationFrame(2);
+                for(int i = 0; i < NUM_SPRITES; i++){
+                    sprites[i].nextAnimationFrame(2);
+                }
             } else {
                 sprite.resetAnimation(2);
+                for(int i = 0; i < NUM_SPRITES; i++){
+                    sprites[i].resetAnimation(2);
+                }
             }
 
             flag = true;
@@ -67,10 +93,19 @@ public class GameScene extends Scene{
 
         if(Kernel.keyListener.isKeyPressed(40)){
             sprite.setLocation(sprite.x, sprite.y + 2);
+            for(int i = 0; i < NUM_SPRITES; i++){
+                sprites[i].setLocation(sprites[i].x, sprites[i].y + 2);
+            }
             if(sprite.currentAnimation == 3) {
                 sprite.nextAnimationFrame(3);
+                for(int i = 0; i < NUM_SPRITES; i++){
+                    sprites[i].nextAnimationFrame(3);
+                }
             } else {
                 sprite.resetAnimation(3);
+                for(int i = 0; i < NUM_SPRITES; i++){
+                    sprites[i].resetAnimation(3);
+                }
             }
 
             flag = true;
@@ -81,10 +116,19 @@ public class GameScene extends Scene{
 
         if(Kernel.keyListener.isKeyPressed(37)){
             sprite.setLocation(sprite.x - 2, sprite.y);
+            for(int i = 0; i < NUM_SPRITES; i++){
+                sprites[i].setLocation(sprites[i].x - 2, sprites[i].y);
+            }
             if(sprite.currentAnimation == 4) {
                 sprite.nextAnimationFrame(4);
+                for(int i = 0; i < NUM_SPRITES; i++){
+                    sprites[i].nextAnimationFrame(4);
+                }
             } else {
                 sprite.resetAnimation(4);
+                for(int i = 0; i < NUM_SPRITES; i++){
+                    sprites[i].resetAnimation(4);
+                }
             }
 
             flag = true;
@@ -95,6 +139,9 @@ public class GameScene extends Scene{
 
         if(flag == false){
             sprite.resetAllAnimations();
+            for(int i = 0; i < NUM_SPRITES; i++){
+                sprites[i].resetAllAnimations();
+            }
         }
     }
 }

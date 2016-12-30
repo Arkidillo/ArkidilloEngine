@@ -18,14 +18,17 @@ public class Sprite extends JComponent implements Runnable{
     public int width;
     public int height;
     public boolean needToRedraw;
+    public boolean collideable;
+    public boolean checkCollisions;
     public Scene scene;
     public boolean animate;
     public HashMap<Integer, Animation> animations = new HashMap<>();
     public ArrayList<Integer> animationIds = new ArrayList<>(); //Animation ID -1 is reserved for default.
     public int currentAnimation;
 
-    //TODO: Resizable sprites
     //TODO: Collision detection
+    //TODO: Fix create sprite from sprite method/ Why isn't GameScene working?
+    //TODO: Add simple physics (velocity + maybe acceleration?)
 
     public Sprite(int x, int y, String fileName, Scene s){
         this.x = x;
@@ -38,10 +41,10 @@ public class Sprite extends JComponent implements Runnable{
     }
 
 
-    //TODO: Finish this.
     public Sprite(Sprite s){
-        image = s.image;
+        defaultImage = s.defaultImage;
         fileName = s.fileName;
+        setImage(fileName);
         x = s.x;
         y = s.y;
         width = s.width;
@@ -50,7 +53,21 @@ public class Sprite extends JComponent implements Runnable{
         scene = s.scene;
         animate = s.animate;
         currentAnimation = s.currentAnimation;
+
+        Animation newAnim;
+        Integer currId;
+
+        for(int i = 0; i < s.animationIds.size(); i++){
+            currId = s.animationIds.get(i);
+            animationIds.add(currId);
+            newAnim = new Animation(s.animations.get(currId), this);
+            animations.put(currId, newAnim);
+        }
+
+        Kernel.gui.add(this);
+        scene.spritesInScene.add(this);
     }
+
 
     @Override
     public void paintComponent(Graphics g){
@@ -74,6 +91,17 @@ public class Sprite extends JComponent implements Runnable{
             repaint();
             needToRedraw = false;
         }
+        if(checkCollisions == true){
+            checkCollisions();
+        }
+    }
+    public void setCollideable(boolean collideable){
+        this.collideable = collideable;
+        scene.addCollideableSprite(this);
+    }
+
+    public void setCheckCollisions(boolean checkCollisions){
+        this.checkCollisions = checkCollisions;
     }
 
     @Override
@@ -186,4 +214,26 @@ public class Sprite extends JComponent implements Runnable{
 
         needToRedraw = true;
     }
+
+    public void keyPressed(int keyCode){    //Users can override these methods if they want to do something with litening sprites.
+    }
+
+    public void keyReleased(int keyCode){
+    }
+
+    public void keyTyped(int keyCode){
+    }
+
+    public void checkCollisions(){
+        ArrayList<Sprite> collideableSprite = scene.collideableSprites;
+        Sprite currSprite;
+
+        for (int i = 0; i < collideableSprite.size(); i++){
+            currSprite = collideableSprite.get(i);
+            if(currSprite.x == x && currSprite.y == y){
+                scene.onCollision(this, currSprite);
+            }
+        }
+    }
+
 }

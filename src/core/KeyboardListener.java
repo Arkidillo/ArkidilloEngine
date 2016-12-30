@@ -10,12 +10,12 @@ import java.util.ArrayList;
 public class KeyboardListener implements KeyListener{
 
     private boolean[] keys = new boolean[256];
-    public ArrayList<GameObject> objectsListening = new ArrayList<>();
+    public ArrayList<Sprite> objectsListening = new ArrayList<>();
     public ArrayList<Scene> scenesListening = new ArrayList<>();
 
     @Override
     public void keyTyped(KeyEvent e) {
-        for(GameObject gameObj: objectsListening){
+        for(Sprite gameObj: objectsListening){
             gameObj.keyTyped(e.getKeyCode());
         }
 
@@ -30,7 +30,7 @@ public class KeyboardListener implements KeyListener{
             keys[e.getKeyCode()] = true;
         }
 
-        for(GameObject gameObj: objectsListening){
+        for(Sprite gameObj: objectsListening){
             gameObj.keyPressed(e.getKeyCode());
         }
 
@@ -44,7 +44,7 @@ public class KeyboardListener implements KeyListener{
         if(e.getKeyCode() < 256) {
             keys[e.getKeyCode()] = false;
         }
-        for(GameObject gameObj: objectsListening){
+        for(Sprite gameObj: objectsListening){
             gameObj.keyReleased(e.getKeyCode());
         }
 
@@ -57,7 +57,7 @@ public class KeyboardListener implements KeyListener{
         return keys[keyCode];
     }
 
-    public void addListeningObject(GameObject o){
+    public void addListeningObject(Sprite o){
         objectsListening.add(o);
     }
 

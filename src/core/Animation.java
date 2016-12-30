@@ -42,6 +42,24 @@ public class Animation {
         }
     }
 
+    public Animation(Animation a, Sprite s){
+        animationId = a.animationId;
+        for(int i = 0; i < a.animationFrames.size(); i++){
+            animationFrames.add(a.animationFrames.get(i));
+        }
+        if(animationDelays.size() != 0){
+            for(int i = 0; i < a.animationDelays.size(); i++){
+                animationDelays.add(a.animationDelays.get(i));
+            }
+        } else {
+            animationDelay = a.animationDelay;
+        }
+
+        currentFrame = a.currentFrame;
+        currentDelay = a.currentDelay;
+        sprite = s;
+    }
+
     public void nextAnimationFrame(){
         if (--currentDelay == 0) {  //counts down the delay until you reach 0
             nextFrame(); //Then you go to the next frame in the animation

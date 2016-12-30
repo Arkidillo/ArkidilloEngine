@@ -1,5 +1,6 @@
 package core;
 
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 /**
@@ -10,6 +11,7 @@ public class Kernel implements Runnable{
     public static Scene currentScene;
     public static Gui gui;
     public static int frameDelay;
+    public ArrayList<Thread> updateThreads = new ArrayList<>();
     public static KeyboardListener keyListener = new KeyboardListener();
 
     public Kernel(){
@@ -27,9 +29,12 @@ public class Kernel implements Runnable{
             update();
 
 
-            if ((sleepTime = frameDelay-(timeStart - System.currentTimeMillis())) > 0){
+            if ((sleepTime = frameDelay+(timeStart - System.currentTimeMillis())) > 0){
+                System.out.println("FPS: " + (1000.0/(System.currentTimeMillis() - timeStart)));
                 Helper.sleep(sleepTime);
             } else {
+                System.out.println("less than 60 fps!");
+                System.out.println("FPS: " + (1000.0/(System.currentTimeMillis() - timeStart)));
                 Helper.sleep(0);
             }
         }
@@ -47,6 +52,7 @@ public class Kernel implements Runnable{
                 if (currentScene.spritesInScene != null) {
                     for (Sprite obj : currentScene.spritesInScene) {    //Goes through all sprites, and start a new thread to update all positions.
                         Thread t = new Thread(obj);
+                        updateThreads.add(t);
                         t.start();
                     }
                 }
@@ -54,12 +60,17 @@ public class Kernel implements Runnable{
 
             }
         }
-        //gui.panel.repaint();
-
-        //for() Check for collisions next.
+        for(Thread t: updateThreads){
+            try {
+                t.join();
+            } catch (InterruptedException e){
+                System.out.println("WARNING: Thread join interrupted!");
+                e.printStackTrace();
+            }
+        }
     }
 
-    public static void addListeningObject(GameObject o){
+    public static void addListeningObject(Sprite o){
         keyListener.addListeningObject(o);
     }
 

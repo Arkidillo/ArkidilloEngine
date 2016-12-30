@@ -7,11 +7,8 @@ import java.util.ArrayList;
  */
 public abstract class Scene {
 
-    public ArrayList<Sprite> spritesInScene;
-
-    public Scene(){
-        spritesInScene = new ArrayList<>();
-    }
+    public ArrayList<Sprite> spritesInScene = new ArrayList<>();
+    public ArrayList<Sprite> collideableSprites = new ArrayList<>();
 
     public abstract void update();
 
@@ -24,6 +21,13 @@ public abstract class Scene {
     }
 
     public void keyTyped(int keyCode){
+    }
+
+    public void addCollideableSprite(Sprite sprite){
+        collideableSprites.add(sprite);
+    }
+
+    public void onCollision(Sprite sprite1, Sprite sprite2){    //Users will override this based on what they want to happen during a collision.
     }
 
 }
