@@ -23,11 +23,17 @@ public abstract class Scene {
     public void keyTyped(int keyCode){
     }
 
-    public void addCollideableSprite(Sprite sprite){
+    public void onCollision(Sprite sprite1, Sprite sprite2){    //Users will override this based on what they want to happen during a collision.
+    }
+
+    public void addCollideableSpriteLabel(Sprite sprite){
         collideableSprites.add(sprite);
     }
 
-    public void onCollision(Sprite sprite1, Sprite sprite2){    //Users will override this based on what they want to happen during a collision.
+    public void removeSprite(Sprite sprite){
+        sprite.clearIcon();
+        spritesInScene.remove(sprite);
+        Kernel.gui.remove(sprite);
     }
 
 }

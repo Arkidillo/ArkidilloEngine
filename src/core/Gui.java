@@ -1,10 +1,11 @@
 package core;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyListener;
 
 /**
- * Created by Devin on 12/25/2016.
+ * Created by Devin on 12/30/2016.
  */
 public class Gui {
     public JFrame frame;
@@ -15,6 +16,7 @@ public class Gui {
         frame = new JFrame();   //Create a new JFrame and JPanel. JPanel necessary to actually draw things to.
 
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setPreferredSize(new Dimension(1920, 1080));
         frame.setUndecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -25,6 +27,7 @@ public class Gui {
 
         width = frame.getWidth();
         height = frame.getHeight();
+        frame.pack();
     }
 
     public void addKeyListener(KeyListener listener){
@@ -32,8 +35,11 @@ public class Gui {
     }
 
     public void add(Sprite sprite){
-        frame.getContentPane().add(sprite);
-        frame.paintComponents(sprite.getGraphics());
+        frame.add(sprite);
     }
 
+    public void remove(Sprite sprite){
+        frame.remove(sprite);
+        frame.repaint();
+    }
 }

@@ -7,10 +7,8 @@ import userCode.*;
 public class SceneLoader {
 
     public static void main(String [] Arkidillo) {
-        Kernel kernel = new Kernel(); //Choose your initial scene to be loaded here. (Here we chose "GameScene" as our starting scene.
+        Kernel kernel = new Kernel(new GameScene());
         Thread t = new Thread(kernel);
         t.start();
-
-        Kernel.showScene(new GameScene());
     }
 }

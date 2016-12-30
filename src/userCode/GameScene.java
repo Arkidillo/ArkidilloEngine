@@ -1,43 +1,50 @@
 package userCode;
 
 import core.*;
+
 /**
- * Created by Devin on 12/25/2016.
+ * Created by Devin on 12/30/2016.
  */
 public class GameScene extends Scene{
-
     public Sprite sprite;
-    public final int NUM_SPRITES = 10;
+    public final int DIM_SIZE = 5;
+    public int NUM_SPRITES = DIM_SIZE * DIM_SIZE;
     Sprite[] sprites = new Sprite[NUM_SPRITES];
     boolean flag = false;
 
     @Override
     public void onCreate(){
         //Start load screen.
-       sprite = new Sprite(0,0,"linkFront.png", this);
+        sprite = new Sprite(100,100,"linkFront.png", this);
 
-       String[] frames = {"linkFront.png", "linkFront2.png"};
-       String[] framesLeft = {"linkLeft.png", "linkLeft2.png"};
-       String[] framesRight = {"linkRight.png", "linkRight2.png"};
-       String[] framesBack = {"linkBack.png", "linkBack2.png"};
+        String[] frames = {"linkFront.png", "linkFront2.png"};
+        String[] framesLeft = {"linkLeft.png", "linkLeft2.png"};
+        String[] framesRight = {"linkRight.png", "linkRight2.png"};
+        String[] framesBack = {"linkBack.png", "linkBack2.png"};
 
-       sprite.addAnimation(framesRight,30,sprite,1);
-       sprite.addAnimation(framesBack, 30, sprite, 2);
-       sprite.addAnimation(frames,30,sprite,3);
-       sprite.addAnimation(framesLeft,30,sprite,4);
+        sprite.addAnimation(framesRight,30,sprite,1);
+        sprite.addAnimation(framesBack, 30, sprite, 2);
+        sprite.addAnimation(frames,30,sprite,3);
+        sprite.addAnimation(framesLeft,30,sprite,4);
 
-       int resizedWidth = sprite.width * 2;
-       int resizedHeight = sprite.height * 2;
+        int resizedWidth = sprite.getWidth() * 2;
+        int resizedHeight = sprite.getHeight() * 2;
 
-       sprite.resizeAnimation(resizedWidth, resizedHeight, true, 1);
-       sprite.resizeAnimation(resizedWidth, resizedHeight, false, 2);
-       sprite.resizeAnimation(resizedWidth, resizedHeight, false, 3);
-       sprite.resizeAnimation(resizedWidth, resizedHeight, false, 4);
+        sprite.resizeAnimation(resizedWidth, resizedHeight, true, 1);
+        sprite.resizeAnimation(resizedWidth, resizedHeight, false, 2);
+        sprite.resizeAnimation(resizedWidth, resizedHeight, false, 3);
+        sprite.resizeAnimation(resizedWidth, resizedHeight, false, 4);
 
-        for(int i = 0; i < NUM_SPRITES; i++){
-            sprites[i] = new Sprite(sprite);
-            sprites[i].setLocation(i*32  + 32, sprite.y);
+        int distance = 10;
+
+        for(int i = 0; i < DIM_SIZE; i++) {
+            for (int j = 0; j < DIM_SIZE; j++) {
+                sprites[j + i * DIM_SIZE] = new Sprite(sprite);
+                sprites[j + i * DIM_SIZE].setLocation(i * distance + distance, j*distance + distance);
+            }
         }
+
+        removeSprite(sprite);
 
         Kernel.addListeningScene(this);
 
@@ -49,9 +56,9 @@ public class GameScene extends Scene{
         flag = false;
 
         if(Kernel.keyListener.isKeyPressed(39)){
-            sprite.setLocation(sprite.x + 2, sprite.y);
+            sprite.setLocation(sprite.getX() + 2, sprite.getY());
             for(int i = 0; i < NUM_SPRITES; i++){
-                sprites[i].setLocation(sprites[i].x + 2, sprites[i].y);
+                sprites[i].setLocation(sprites[i].getX() + 2, sprites[i].getY());
             }
             if(sprite.currentAnimation == 1) {
                 sprite.nextAnimationFrame(1);
@@ -70,9 +77,9 @@ public class GameScene extends Scene{
         }
 
         if(Kernel.keyListener.isKeyPressed(38)){
-            sprite.setLocation(sprite.x, sprite.y - 2);
+            sprite.setLocation(sprite.getX(), sprite.getY() - 2);
             for(int i = 0; i < NUM_SPRITES; i++){
-                sprites[i].setLocation(sprites[i].x, sprites[i].y - 2);
+                sprites[i].setLocation(sprites[i].getX(), sprites[i].getY() - 2);
             }
             if(sprite.currentAnimation == 2) {
                 sprite.nextAnimationFrame(2);
@@ -92,9 +99,9 @@ public class GameScene extends Scene{
         }
 
         if(Kernel.keyListener.isKeyPressed(40)){
-            sprite.setLocation(sprite.x, sprite.y + 2);
+            sprite.setLocation(sprite.getX(), sprite.getY() + 2);
             for(int i = 0; i < NUM_SPRITES; i++){
-                sprites[i].setLocation(sprites[i].x, sprites[i].y + 2);
+                sprites[i].setLocation(sprites[i].getX(), sprites[i].getY() + 2);
             }
             if(sprite.currentAnimation == 3) {
                 sprite.nextAnimationFrame(3);
@@ -114,9 +121,9 @@ public class GameScene extends Scene{
         }
 
         if(Kernel.keyListener.isKeyPressed(37)){
-            sprite.setLocation(sprite.x - 2, sprite.y);
+            sprite.setLocation(sprite.getX() - 2, sprite.getY());
             for(int i = 0; i < NUM_SPRITES; i++){
-                sprites[i].setLocation(sprites[i].x - 2, sprites[i].y);
+                sprites[i].setLocation(sprites[i].getX() - 2, sprites[i].getY());
             }
             if(sprite.currentAnimation == 4) {
                 sprite.nextAnimationFrame(4);

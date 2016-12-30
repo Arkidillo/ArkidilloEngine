@@ -6,49 +6,39 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Devin on 12/27/2016.
+ * Created by Devin on 12/30/2016.
  */
-public class Sprite extends JComponent implements Runnable{
-    public Image image;
-    public Image defaultImage;
-    public String fileName;
+public class Sprite extends JLabel implements Runnable {
+    public Scene scene;
+    public ImageIcon defaultImage;
+    public ImageIcon image;
+    public boolean needToRepaint;
 
-    public int x;
-    public int y;
-    public int width;
-    public int height;
-    public boolean needToRedraw;
     public boolean collideable;
     public boolean checkCollisions;
-    public Scene scene;
     public boolean animate;
     public HashMap<Integer, Animation> animations = new HashMap<>();
     public ArrayList<Integer> animationIds = new ArrayList<>(); //Animation ID -1 is reserved for default.
     public int currentAnimation;
 
-    //TODO: Collision detection
-    //TODO: Fix create sprite from sprite method/ Why isn't GameScene working?
-    //TODO: Add simple physics (velocity + maybe acceleration?)
-
     public Sprite(int x, int y, String fileName, Scene s){
         scene = s;
-        setImage(fileName);
-        defaultImage = image;
+        defaultImage = new ImageIcon(".\\assets\\" + fileName);
+        image = defaultImage;
+        setIcon(image);
         Kernel.gui.add(this);
+        setSize(getIcon().getIconWidth(), getIcon().getIconHeight());
         scene.spritesInScene.add(this);
         setLocation(x,y);
+        needToRepaint = true;
     }
-
 
     public Sprite(Sprite s){
         defaultImage = s.defaultImage;
-        fileName = s.fileName;
         image = s.image;
-        x = s.x;
-        y = s.y;
-        width = s.width;
-        height = s.height;
-        needToRedraw = s.needToRedraw;
+        setIcon(image);
+        setLocation(s.getX(), s.getY());
+        setSize(getIcon().getIconWidth(), getIcon().getIconHeight());
         scene = s.scene;
         animate = s.animate;
         currentAnimation = s.currentAnimation;
@@ -65,64 +55,50 @@ public class Sprite extends JComponent implements Runnable{
 
         Kernel.gui.add(this);
         scene.spritesInScene.add(this);
-        needToRedraw = true;
-
+        needToRepaint = true;
     }
-
 
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        if(image == null) return;
-
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(image, x, y, null);
-        g2d.fillRect(x, y, 1, 1);
-        g2d.setColor(Color.RED);
     }
 
-    public void update(){}
+    public void update(){
+
+    }
 
     public void run(){
         update();
-        if (animate == true) {
-            animations.get(currentAnimation).nextAnimationFrame();
-        }
-        if(needToRedraw == true) {
+        if (needToRepaint){
             repaint();
-            needToRedraw = false;
-        }
-        if(checkCollisions == true){
-            checkCollisions();
+            needToRepaint = false;
         }
     }
+
+    @Override
+    public void setLocation(int x, int y){
+        super.setLocation(x, y);
+        needToRepaint = true;
+    }
+
+    public void setImage(String fileName){
+        image = new ImageIcon(".\\assets\\" + fileName);
+        setIcon(image);
+        setSize(getIcon().getIconWidth(), getIcon().getIconHeight());
+        needToRepaint = true;
+    }
+
     public void setCollideable(boolean collideable){
         this.collideable = collideable;
-        scene.addCollideableSprite(this);
+        scene.addCollideableSpriteLabel(this);
     }
 
     public void setCheckCollisions(boolean checkCollisions){
         this.checkCollisions = checkCollisions;
     }
 
-    @Override
-    public void setLocation(int x, int y){
-        this.x = x;
-        this.y = y;
-        //super.setLocation(x,y);
-        needToRedraw = true;
-    }
-
-    public void setImage(String fileName){
-        this.fileName = fileName;
-        image = ImageLoader.loadImage(fileName);
-        width = image.getWidth(null);
-        height = image.getHeight(null);
-        needToRedraw = true;
-    }
-
     public void redraw(){   //Redraws the sprite on the next frame.
-        needToRedraw = true;
+        needToRepaint = true;
     }
 
     public void addAnimation(String[] f, int delayFrames, Sprite sprite, int animationId){//Defines a set of images for which to use in the animation
@@ -158,20 +134,21 @@ public class Sprite extends JComponent implements Runnable{
     }
 
     public void resizeCurrentImage(int width, int height){
-        image = ImageLoader.resizeImage(width, height, image);
-        this.width = width;
-        this.height = height;
+        image =  new ImageIcon(ImageLoader.resizeImage(width, height, image.getImage()));
+        setIcon(image);
+        setSize(getIcon().getIconWidth(), getIcon().getIconHeight());
 
-        needToRedraw = true;
+
+        needToRepaint = true;
     }
 
     public void resizeDefaultImage(int width, int height){
-        image = ImageLoader.resizeImage(width, height, image);
-        defaultImage = image;
-        this.width = width;
-        this.height = height;
+        defaultImage = new ImageIcon(ImageLoader.resizeImage(width, height, defaultImage.getImage()));
+        setIcon(defaultImage);
+        image = defaultImage;
+        setSize(getIcon().getIconWidth(), getIcon().getIconHeight());
 
-        needToRedraw = true;
+        needToRepaint = true;
     }
 
     public void resizeAnimation(int width, int height, boolean resizeDefaultImage, int animationId){  //Resizes all of the images in the current animation image arraylist.
@@ -190,9 +167,9 @@ public class Sprite extends JComponent implements Runnable{
     public void selectAnimation(int animationId){   //Select which animation you would like to preform.
         currentAnimation = animationId;
         image = animations.get(currentAnimation).animationFrames.get(0);
-        width = image.getWidth(null);
-        height = image.getHeight(null);
-        needToRedraw = true;
+        setIcon(image);
+        setSize(getIcon().getIconWidth(), getIcon().getIconHeight());
+        needToRepaint = true;
     }
 
     public void removeAnimation(int animationId){
@@ -212,13 +189,13 @@ public class Sprite extends JComponent implements Runnable{
         if(!image.equals(defaultImage)) {
             if (animationIds.size() != 0) {
                 image = defaultImage;
+                setIcon(image);
             }
 
-            width = defaultImage.getWidth(null);
-            height = defaultImage.getHeight(null);
+            setSize(getIcon().getIconWidth(), getIcon().getIconHeight());
             currentAnimation = -1;
 
-            needToRedraw = true;
+            needToRepaint = true;
         }
     }
 
@@ -232,15 +209,18 @@ public class Sprite extends JComponent implements Runnable{
     }
 
     public void checkCollisions(){
-        ArrayList<Sprite> collideableSprite = scene.collideableSprites;
+        ArrayList<Sprite> collideableSprites = scene.collideableSprites;
         Sprite currSprite;
 
-        for (int i = 0; i < collideableSprite.size(); i++){
-            currSprite = collideableSprite.get(i);
-            if(currSprite.x == x && currSprite.y == y){
+        for (int i = 0; i < collideableSprites.size(); i++){
+            currSprite = collideableSprites.get(i);
+            if(currSprite.getX() == getX() && currSprite.getY() == getY()){
                 scene.onCollision(this, currSprite);
             }
         }
     }
 
+    public void clearIcon(){
+        setIcon(null);
+    }
 }

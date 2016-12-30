@@ -57,11 +57,12 @@ public class KeyboardListener implements KeyListener{
         return keys[keyCode];
     }
 
-    public void addListeningObject(Sprite o){
-        objectsListening.add(o);
+    public void addListeningSprite(Sprite s){
+        objectsListening.add(s);
     }
 
     public void addListeningScene(Scene s){
         scenesListening.add(s);
     }
+
 }

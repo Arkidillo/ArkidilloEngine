@@ -14,10 +14,12 @@ public class Kernel implements Runnable{
     public ArrayList<Thread> updateThreads = new ArrayList<>();
     public static KeyboardListener keyListener = new KeyboardListener();
 
-    public Kernel(){
+    public Kernel(Scene scene){
         frameDelay = 16; //Frame delay in milliseconds, set to ~60 frames per second.
         gui = new Gui();
         gui.addKeyListener(keyListener);
+        scene.onCreate();
+        currentScene = scene;
     }
 
     public void run(){
@@ -69,8 +71,8 @@ public class Kernel implements Runnable{
         }
     }
 
-    public static void addListeningObject(Sprite o){
-        keyListener.addListeningObject(o);
+    public static void addListeningSprite(Sprite o){
+        keyListener.addListeningSprite(o);
     }
 
     public static void addListeningScene(Scene s){

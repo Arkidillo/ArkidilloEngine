@@ -1,6 +1,6 @@
 package core;
 
-import java.awt.*;
+import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Animation {
     public int animationId;
     public Sprite sprite;
-    public ArrayList<Image> animationFrames = new ArrayList<>();
+    public ArrayList<ImageIcon> animationFrames = new ArrayList<>();
     public ArrayList<Integer> animationDelays = new ArrayList<>();
     public int animationDelay;
     public int currentFrame;
@@ -21,7 +21,7 @@ public class Animation {
 
         currentFrame = 0;
         for(int i = 0; i < f.length; i++){
-            animationFrames.add(ImageLoader.loadImage(f[i]));
+            animationFrames.add(new ImageIcon(".\\assets\\" + f[i]));
         }
 
         animationDelay = delayFrames;
@@ -34,7 +34,7 @@ public class Animation {
 
         currentFrame = 0;
         for(int i = 0; i < f.length; i++){
-            animationFrames.add(ImageLoader.loadImage(f[i]));
+            animationFrames.add(new ImageIcon(".\\assets\\" + f[i]));
         }
 
         for(int i = 0; i < delays.length; i++){
@@ -73,9 +73,10 @@ public class Animation {
 
     public void nextFrame(){//Sets the image to the next frame of the animation.
         sprite.image = animationFrames.get((++currentFrame)%animationFrames.size());
-        sprite.width = sprite.image.getWidth(null);
-        sprite.height = sprite.image.getHeight(null);
-        sprite.needToRedraw = true;
+        sprite.setIcon(sprite.image);
+        sprite.setSize(sprite.getIcon().getIconWidth(), sprite.getIcon().getIconHeight());
+
+        sprite.needToRepaint = true;
     }
 
     public void resizeAnimation(int width, int height, boolean resizeDefaultImage){  //Resizes all of the images in the current animation image arraylist.
@@ -83,11 +84,11 @@ public class Animation {
             sprite.resizeDefaultImage(width, height);
         }
 
-        ArrayList<Image> newAnimations = new ArrayList<>();
+        ArrayList<ImageIcon> newAnimations = new ArrayList<>();
         for(int i = 0; i < animationFrames.size(); i++){
-            newAnimations.add(ImageLoader.resizeImage(width, height, animationFrames.get(i)));  //Add the resized images to a new array, in order of their animation
+            newAnimations.add(new ImageIcon(ImageLoader.resizeImage(width, height, animationFrames.get(i).getImage())));  //Add the resized images to a new array, in order of their animation
         }
-        for (Image image1 : animationFrames = newAnimations);   //copy all of the new images back into the animationFrames, so the resized images will be used in the animation going further.
+        for (ImageIcon image1 : animationFrames = newAnimations);   //copy all of the new images back into the animationFrames, so the resized images will be used in the animation going further.
     }
 
     public int getCurrentFrameNumber(){    //This will start at 0!
