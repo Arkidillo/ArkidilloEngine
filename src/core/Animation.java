@@ -88,8 +88,6 @@ public class Animation {
             newAnimations.add(ImageLoader.resizeImage(width, height, animationFrames.get(i)));  //Add the resized images to a new array, in order of their animation
         }
         for (Image image1 : animationFrames = newAnimations);   //copy all of the new images back into the animationFrames, so the resized images will be used in the animation going further.
-
-        sprite.needToRedraw = true;
     }
 
     public int getCurrentFrameNumber(){    //This will start at 0!
@@ -103,7 +101,5 @@ public class Animation {
         } else {
             currentDelay = animationDelay;
         }
-        sprite.image = animationFrames.get(0);
-        sprite.needToRedraw = true;
     }
 }

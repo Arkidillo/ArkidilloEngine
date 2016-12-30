@@ -7,7 +7,7 @@ import core.*;
 public class GameScene extends Scene{
 
     public Sprite sprite;
-    public final int NUM_SPRITES = 20;
+    public final int NUM_SPRITES = 10;
     Sprite[] sprites = new Sprite[NUM_SPRITES];
     boolean flag = false;
 
@@ -39,6 +39,8 @@ public class GameScene extends Scene{
             sprites[i].setLocation(i*32  + 32, sprite.y);
         }
 
+        Kernel.addListeningScene(this);
+
         //End load screen.
     }
 
@@ -58,14 +60,13 @@ public class GameScene extends Scene{
                 }
             } else {
                 sprite.resetAnimation(1);
+                sprite.selectAnimation(1);
                 for(int i = 0; i < NUM_SPRITES; i++){
                     sprites[i].resetAnimation(1);
+                    sprites[i].selectAnimation(1);
                 }
             }
             flag = true;
-            /*if(!sprite.fileName.equals("linkRight.png")){
-                sprite.setImage("linkRight.png");
-            }*/
         }
 
         if(Kernel.keyListener.isKeyPressed(38)){
@@ -80,15 +81,14 @@ public class GameScene extends Scene{
                 }
             } else {
                 sprite.resetAnimation(2);
+                sprite.selectAnimation(2);
                 for(int i = 0; i < NUM_SPRITES; i++){
                     sprites[i].resetAnimation(2);
+                    sprites[i].selectAnimation(2);
                 }
             }
 
             flag = true;
-            /*if(!sprite.fileName.equals("linkBack.png")){
-                sprite.setImage("linkBack.png");
-            }*/
         }
 
         if(Kernel.keyListener.isKeyPressed(40)){
@@ -103,15 +103,14 @@ public class GameScene extends Scene{
                 }
             } else {
                 sprite.resetAnimation(3);
+                sprite.selectAnimation(3);
                 for(int i = 0; i < NUM_SPRITES; i++){
                     sprites[i].resetAnimation(3);
+                    sprites[i].selectAnimation(3);
                 }
             }
 
             flag = true;
-            /*if(!sprite.fileName.equals("linkFront.png")){
-                sprite.setImage("linkFront.png");
-            }*/
         }
 
         if(Kernel.keyListener.isKeyPressed(37)){
@@ -126,21 +125,20 @@ public class GameScene extends Scene{
                 }
             } else {
                 sprite.resetAnimation(4);
+                sprite.selectAnimation(4);
                 for(int i = 0; i < NUM_SPRITES; i++){
                     sprites[i].resetAnimation(4);
+                    sprites[i].selectAnimation(4);
                 }
             }
 
             flag = true;
-            /*if(!sprite.fileName.equals("linkLeft.png")){
-                sprite.setImage("linkLeft.png");
-            }*/
         }
 
         if(flag == false){
-            sprite.resetAllAnimations();
+            sprite.resetToDefault();
             for(int i = 0; i < NUM_SPRITES; i++){
-                sprites[i].resetAllAnimations();
+                sprites[i].resetToDefault();
             }
         }
     }

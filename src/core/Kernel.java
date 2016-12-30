@@ -30,7 +30,6 @@ public class Kernel implements Runnable{
 
 
             if ((sleepTime = frameDelay+(timeStart - System.currentTimeMillis())) > 0){
-                System.out.println("FPS: " + (1000.0/sleepTime));
                 Helper.sleep(sleepTime);
             } else {
                 System.out.println("less than 60 fps!");

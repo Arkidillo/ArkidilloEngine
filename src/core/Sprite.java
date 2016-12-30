@@ -31,20 +31,19 @@ public class Sprite extends JComponent implements Runnable{
     //TODO: Add simple physics (velocity + maybe acceleration?)
 
     public Sprite(int x, int y, String fileName, Scene s){
-        this.x = x;
-        this.y = y;
         scene = s;
         setImage(fileName);
         defaultImage = image;
         Kernel.gui.add(this);
         scene.spritesInScene.add(this);
+        setLocation(x,y);
     }
 
 
     public Sprite(Sprite s){
         defaultImage = s.defaultImage;
         fileName = s.fileName;
-        setImage(fileName);
+        image = s.image;
         x = s.x;
         y = s.y;
         width = s.width;
@@ -66,18 +65,20 @@ public class Sprite extends JComponent implements Runnable{
 
         Kernel.gui.add(this);
         scene.spritesInScene.add(this);
+        needToRedraw = true;
+
     }
 
 
     @Override
     public void paintComponent(Graphics g){
+        super.paintComponent(g);
         if(image == null) return;
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(image, x, y, null);
         g2d.fillRect(x, y, 1, 1);
         g2d.setColor(Color.RED);
-
     }
 
     public void update(){}
@@ -108,6 +109,7 @@ public class Sprite extends JComponent implements Runnable{
     public void setLocation(int x, int y){
         this.x = x;
         this.y = y;
+        //super.setLocation(x,y);
         needToRedraw = true;
     }
 
@@ -187,6 +189,9 @@ public class Sprite extends JComponent implements Runnable{
 
     public void selectAnimation(int animationId){   //Select which animation you would like to preform.
         currentAnimation = animationId;
+        image = animations.get(currentAnimation).animationFrames.get(0);
+        width = image.getWidth(null);
+        height = image.getHeight(null);
         needToRedraw = true;
     }
 
@@ -204,15 +209,17 @@ public class Sprite extends JComponent implements Runnable{
     }
 
     public void resetToDefault(){
-        if(animationIds.size() != 0) {
-            image = defaultImage;
+        if(!image.equals(defaultImage)) {
+            if (animationIds.size() != 0) {
+                image = defaultImage;
+            }
+
+            width = defaultImage.getWidth(null);
+            height = defaultImage.getHeight(null);
+            currentAnimation = -1;
+
+            needToRedraw = true;
         }
-
-        width = defaultImage.getWidth(null);
-        height = defaultImage.getHeight(null);
-        currentAnimation = -1;
-
-        needToRedraw = true;
     }
 
     public void keyPressed(int keyCode){    //Users can override these methods if they want to do something with litening sprites.
