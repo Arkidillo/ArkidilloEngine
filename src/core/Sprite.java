@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Devin on 12/30/2016.
@@ -20,6 +21,10 @@ public class Sprite extends JLabel implements Runnable {
     public HashMap<Integer, Animation> animations = new HashMap<>();
     public ArrayList<Integer> animationIds = new ArrayList<>(); //Animation ID -1 is reserved for default.
     public int currentAnimation;
+
+    public double speed;
+    public int framesUntilMove;
+    public int directionAngle;
 
     //TODO: Collisions
     //TODO: Simple physics
@@ -75,6 +80,9 @@ public class Sprite extends JLabel implements Runnable {
         if (needToRepaint){
             repaint();
             needToRepaint = false;
+        }
+        if(speed > 0.00001){  //check if velocity is essentially 0
+            move(speed);
         }
     }
 
@@ -225,5 +233,31 @@ public class Sprite extends JLabel implements Runnable {
 
     public void clearIcon(){
         setIcon(null);
+    }
+
+    private void move(double speed){
+        //The x distance = cos(directionAngle) * velocity.
+        //The y distance = sin(directionAngle) * velocity.
+        //Each of these would need to be at least 1, thus the velocity (using pythagorean theorem), must be at least root(2)
+        if(framesUntilMove == 0) {
+            if (speed >= Math.sqrt(2)) {   //if velocity is greater than 1, we can just move that many pixels each frame update, or else we have to wait a couple of frames before moving, because we cannot move a fraction of a pixel.
+                double moveX = getX() * Math.cos(directionAngle);
+                double moveY = getY() * Math.sin(directionAngle);
+
+                double leftOverX = moveX % 1;
+                double leftOverY = moveY % 1;
+                double newSpeed = leftOverX * leftOverX + leftOverY * leftOverY;
+                setLocation((int) moveX, (int) moveY);
+                if (newSpeed > 0.00001) {
+                    move(Math.sqrt(newSpeed)); //will recursively call move on the new, left over speed
+                    //would need to find the gcd of the leftOVerx and y to make a whole number fraction, then wait that long -> too choppy
+                    setLocation(getX() + 1, getY() + 1);//Move by 1 extra pixel if the number was not a whole number, and then will wait the correspond amount of frames to average out the correct speed
+                }
+            } else {
+                framesUntilMove = (int) (1.0 / speed) - 1;
+            }
+        } else {
+            framesUntilMove--;
+        }
     }
 }
