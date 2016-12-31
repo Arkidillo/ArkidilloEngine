@@ -23,7 +23,7 @@ public abstract class Scene {
     public void keyTyped(int keyCode){
     }
 
-    public void onCollision(Sprite sprite1, Sprite sprite2){    //Users will override this based on what they want to happen during a collision.
+    public void onCollision(Sprite sprite1, Sprite sprite2){    //Users will override this based on what they want to happen during a collision. They can use sprite.getName() to check what actual object collided with what
     }
 
     public void addCollideableSpriteLabel(Sprite sprite){

@@ -21,6 +21,9 @@ public class Sprite extends JLabel implements Runnable {
     public ArrayList<Integer> animationIds = new ArrayList<>(); //Animation ID -1 is reserved for default.
     public int currentAnimation;
 
+    //TODO: Collisions
+    //TODO: Simple physics
+
     public Sprite(int x, int y, String fileName, Scene s){
         scene = s;
         defaultImage = new ImageIcon(".\\assets\\" + fileName);

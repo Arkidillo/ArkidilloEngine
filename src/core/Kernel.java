@@ -69,6 +69,19 @@ public class Kernel implements Runnable{
                 e.printStackTrace();
             }
         }
+        ArrayList<Sprite> collideables = currentScene.collideableSprites;
+        Sprite body1;
+        Sprite body2;
+
+        for(int i = 0; i < collideables.size(); i++){
+            body1 = collideables.get(i);
+            for(int j = 0; j < collideables.size(); j++){
+                body2 = collideables.get(j);
+                if(body1.getX() == body2.getX() && body1.getY() == body2.getY()){
+                    currentScene.onCollision(body1, body2);
+                }
+            }
+        }
     }
 
     public static void addListeningSprite(Sprite o){
