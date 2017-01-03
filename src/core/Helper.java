@@ -23,4 +23,8 @@ public class Helper {
             e.printStackTrace();
         }
     }
+
+    public static boolean isBetween(int num, int a, int b){
+        return (num > a && num < b);
+    }
 }

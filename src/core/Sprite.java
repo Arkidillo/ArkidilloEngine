@@ -1,10 +1,8 @@
 package core;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Devin on 12/30/2016.
@@ -23,8 +21,8 @@ public class Sprite extends JLabel implements Runnable {
     public int currentAnimation;
 
     public double speed;
-    public int framesUntilMove;
-    public int directionAngle;
+    //public int framesUntilMove;
+    public int directionAngle;  //Radians
 
     //TODO: Collisions
     //TODO: Simple physics
@@ -34,22 +32,22 @@ public class Sprite extends JLabel implements Runnable {
         defaultImage = new ImageIcon(".\\assets\\" + fileName);
         image = defaultImage;
         setIcon(image);
-        Kernel.gui.add(this);
         setSize(getIcon().getIconWidth(), getIcon().getIconHeight());
+        Kernel.gui.add(this);
         scene.spritesInScene.add(this);
         setLocation(x,y);
-        needToRepaint = true;
     }
 
     public Sprite(Sprite s){
         defaultImage = s.defaultImage;
         image = s.image;
         setIcon(image);
-        setLocation(s.getX(), s.getY());
         setSize(getIcon().getIconWidth(), getIcon().getIconHeight());
         scene = s.scene;
         animate = s.animate;
         currentAnimation = s.currentAnimation;
+        speed = s.speed;
+        directionAngle = s.directionAngle;
 
         Animation newAnim;
         Integer currId;
@@ -63,26 +61,21 @@ public class Sprite extends JLabel implements Runnable {
 
         Kernel.gui.add(this);
         scene.spritesInScene.add(this);
-        needToRepaint = true;
-    }
-
-    @Override
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
+        setLocation(s.getX(), s.getY());
     }
 
     public void update(){
-
     }
 
     public void run(){
+        setLocation(getX(), getY());
         update();
         if (needToRepaint){
             repaint();
             needToRepaint = false;
         }
-        if(speed > 0.00001){  //check if velocity is essentially 0
-            move(speed);
+        if(speed > 0.5){  //check if velocity is essentially 0
+            move();
         }
     }
 
@@ -198,10 +191,9 @@ public class Sprite extends JLabel implements Runnable {
 
     public void resetToDefault(){
         if(!image.equals(defaultImage)) {
-            if (animationIds.size() != 0) {
-                image = defaultImage;
-                setIcon(image);
-            }
+            image = defaultImage;
+            setIcon(image);
+
 
             setSize(getIcon().getIconWidth(), getIcon().getIconHeight());
             currentAnimation = -1;
@@ -234,7 +226,7 @@ public class Sprite extends JLabel implements Runnable {
     public void clearIcon(){
         setIcon(null);
     }
-
+/*
     private void move(double speed){
         //The x distance = cos(directionAngle) * velocity.
         //The y distance = sin(directionAngle) * velocity.
@@ -259,5 +251,17 @@ public class Sprite extends JLabel implements Runnable {
         } else {
             framesUntilMove--;
         }
+    }
+*/
+    public void setVelocity(int pixelsPerSecond, int radians){
+        speed = pixelsPerSecond;
+        directionAngle = radians;
+    }
+
+    private void move(){
+        int xVector = (int)(Math.round(Math.cos(directionAngle) * speed));
+        int yVector = (int)(Math.round(Math.sin(directionAngle) * speed));
+
+        setLocation(getX() + xVector, getY() + yVector);
     }
 }

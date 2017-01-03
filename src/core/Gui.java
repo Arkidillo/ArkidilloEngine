@@ -15,13 +15,13 @@ public class Gui {
     public Gui(){
         frame = new JFrame();   //Create a new JFrame and JPanel. JPanel necessary to actually draw things to.
 
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setPreferredSize(new Dimension(1920, 1080));
         frame.setUndecorated(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setFocusable(true);
-        frame.setLocationRelativeTo(null);
+        //frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
 
@@ -40,6 +40,5 @@ public class Gui {
 
     public void remove(Sprite sprite){
         frame.remove(sprite);
-        frame.repaint();
     }
 }

@@ -7,15 +7,16 @@ import core.*;
  */
 public class GameScene extends Scene{
     public Sprite sprite;
-    public final int DIM_SIZE = 5;
+    public final int DIM_SIZE = 0;
     public int NUM_SPRITES = DIM_SIZE * DIM_SIZE;
     Sprite[] sprites = new Sprite[NUM_SPRITES];
+    int wait;
     boolean flag = false;
 
     @Override
     public void onCreate(){
         //Start load screen.
-        sprite = new Sprite(100,100,"linkFront.png", this);
+        sprite = new Sprite(0,0,"linkFront.png", this);
 
         String[] frames = {"linkFront.png", "linkFront2.png"};
         String[] framesLeft = {"linkLeft.png", "linkLeft2.png"};
@@ -40,14 +41,12 @@ public class GameScene extends Scene{
         for(int i = 0; i < DIM_SIZE; i++) {
             for (int j = 0; j < DIM_SIZE; j++) {
                 sprites[j + i * DIM_SIZE] = new Sprite(sprite);
-                sprites[j + i * DIM_SIZE].setLocation(i * distance + distance, j*distance + distance);
+                sprites[j + i * DIM_SIZE].setLocation(i * distance + distance, j * distance + distance);
             }
         }
 
-        removeSprite(sprite);
-
-        Kernel.addListeningScene(this);
-
+        //removeSprite(sprite);
+        sprite.setLocation(sprite.getX(), sprite.getY());
         //End load screen.
     }
 

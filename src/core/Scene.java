@@ -31,7 +31,6 @@ public abstract class Scene {
     }
 
     public void removeSprite(Sprite sprite){
-        sprite.clearIcon();
         spritesInScene.remove(sprite);
         Kernel.gui.remove(sprite);
     }
