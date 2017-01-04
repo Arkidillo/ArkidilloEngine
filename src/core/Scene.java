@@ -9,6 +9,7 @@ public abstract class Scene {
 
     public ArrayList<Sprite> spritesInScene = new ArrayList<>();
     public ArrayList<Sprite> collideableSprites = new ArrayList<>();
+    public ArrayList<Sprite> checkCollideableSprites = new ArrayList<>();
 
     public abstract void update();
 

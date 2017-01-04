@@ -21,7 +21,6 @@ public class Sprite extends JLabel implements Runnable {
     public int currentAnimation;
 
     public double speed;
-    //public int framesUntilMove;
     public int directionAngle;  //Radians
 
     //TODO: Collisions
@@ -48,6 +47,12 @@ public class Sprite extends JLabel implements Runnable {
         currentAnimation = s.currentAnimation;
         speed = s.speed;
         directionAngle = s.directionAngle;
+        if(s.checkCollisions){
+            setCheckCollisions(true);
+        }
+        if(s.collideable){
+            setCollideable(true);
+        }
 
         Animation newAnim;
         Integer currId;
@@ -94,11 +99,19 @@ public class Sprite extends JLabel implements Runnable {
 
     public void setCollideable(boolean collideable){
         this.collideable = collideable;
+        if (collideable)
+            scene.collideableSprites.add(this);
+        else
+            scene.collideableSprites.remove(this);
         scene.addCollideableSpriteLabel(this);
     }
 
     public void setCheckCollisions(boolean checkCollisions){
         this.checkCollisions = checkCollisions;
+        if (checkCollisions)
+            scene.checkCollideableSprites.add(this);
+        else
+            scene.checkCollideableSprites.remove(this);
     }
 
     public void redraw(){   //Redraws the sprite on the next frame.
@@ -209,18 +222,6 @@ public class Sprite extends JLabel implements Runnable {
     }
 
     public void keyTyped(int keyCode){
-    }
-
-    public void checkCollisions(){
-        ArrayList<Sprite> collideableSprites = scene.collideableSprites;
-        Sprite currSprite;
-
-        for (int i = 0; i < collideableSprites.size(); i++){
-            currSprite = collideableSprites.get(i);
-            if(currSprite.getX() == getX() && currSprite.getY() == getY()){
-                scene.onCollision(this, currSprite);
-            }
-        }
     }
 
     public void clearIcon(){

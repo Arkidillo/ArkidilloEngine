@@ -69,35 +69,59 @@ public class Kernel implements Runnable{
                 e.printStackTrace();
             }
         }
-        ArrayList<Sprite> collideables = currentScene.collideableSprites;
-        Sprite body1;
-        Sprite body2;
-        int x1, x2, y1, y2, width1, width2, height1, height2;
+        if (currentScene != null) {
+            ArrayList<Sprite> collideables = currentScene.collideableSprites;
+            ArrayList<Sprite> detectSprites = currentScene.checkCollideableSprites;
+            Sprite body1;
+            Sprite body2;
+            int x1, x2, y1, y2, width1, width2, height1, height2;
 
-        for(int i = 0; i < collideables.size(); i++){
-            body1 = collideables.get(i);
-            x1 = body1.getX();
-            y1 = body1.getY();
-            width1 = body1.getWidth();
-            height1 = body1.getHeight();
-            for(int j = 0; j < collideables.size(); j++){
-                body2 = collideables.get(j);
-                x2 = body2.getX();
-                y2 = body2.getY();
-                width2 = body2.getWidth();
-                height2 = body2.getHeight();
-                if(x1 + width1 == x2 && (Helper.isBetween(y1, y2, y2 + height1) || Helper.isBetween(y2, y1, y1 + height1) || y1 == y2))
-                    currentScene.onCollision(body1, body2);
-                else if(y1 + height1 == y2 && (Helper.isBetween(x1, x2, x2 + width2) || Helper.isBetween(x2, x1, x1 + width1) || x1 == x2))
-                    currentScene.onCollision(body1, body2);
-                else if(y1 + height1 == y2 && x1 + width1 == x2)
-                    currentScene.onCollision(body1, body2);
-                else if(y1 == y2 + height2 && x1 + width1 == x2)
-                    currentScene.onCollision(body1, body2);
-                else if(x1 == x2 && y1 == y2)
-                    currentScene.onCollision(body1, body2);
-                else if(Helper.isBetween(x2, x1, x1 + width1) && (Helper.isBetween(y2, y1, y1 + height1) || Helper.isBetween(y2 + height2, y1, y1+ height1))){
-                    currentScene.onCollision(body1, body2);
+            for (int i = 0; i < detectSprites.size(); i++) {
+                body1 = detectSprites.get(i);
+                x1 = body1.getX();
+                y1 = body1.getY();
+                width1 = body1.getWidth();
+                height1 = body1.getHeight();
+                for (int j = 0; j < collideables.size(); j++) {
+                    body2 = collideables.get(j);
+                    if (!body2.equals(body1)) {
+                        x2 = body2.getX();
+                        y2 = body2.getY();
+                        width2 = body2.getWidth();
+                        height2 = body2.getHeight();
+
+                        if (x1 + width1 == x2 && (Helper.isBetween(y1, y2, y2 + height1) || Helper.isBetween(y2, y1, y1 + height1) || y1 == y2))
+                            currentScene.onCollision(body1, body2);
+                        else if (y1 + height1 == y2 && (Helper.isBetween(x1, x2, x2 + width2) || Helper.isBetween(x2, x1, x1 + width1) || x1 == x2))
+                            currentScene.onCollision(body1, body2);
+                        else if (y1 + height1 == y2 && x1 + width1 == x2)
+                            currentScene.onCollision(body1, body2);
+                        else if (y1 == y2 + height2 && x1 + width1 == x2)
+                            currentScene.onCollision(body1, body2);
+                        else if (x1 == x2 && y1 == y2)
+                            currentScene.onCollision(body1, body2);
+                        else if (Helper.isBetween(x2, x1, x1 + width1) && (Helper.isBetween(y2, y1, y1 + height1) || Helper.isBetween(y2 + height2, y1, y1 + height1)))
+                            currentScene.onCollision(body1, body2);
+                        if (!body2.checkCollisions) {
+                            Sprite temp = body1;
+                            body1 = body2;
+                            body2 = temp;
+
+                            if (x1 + width1 == x2 && (Helper.isBetween(y1, y2, y2 + height1) || Helper.isBetween(y2, y1, y1 + height1) || y1 == y2))
+                                currentScene.onCollision(body1, body2);
+                            else if (y1 + height1 == y2 && (Helper.isBetween(x1, x2, x2 + width2) || Helper.isBetween(x2, x1, x1 + width1) || x1 == x2))
+                                currentScene.onCollision(body1, body2);
+                            else if (y1 + height1 == y2 && x1 + width1 == x2)
+                                currentScene.onCollision(body1, body2);
+                            else if (y1 == y2 + height2 && x1 + width1 == x2)
+                                currentScene.onCollision(body1, body2);
+                            else if (x1 == x2 && y1 == y2)
+                                currentScene.onCollision(body1, body2);
+                            else if (Helper.isBetween(x2, x1, x1 + width1) && (Helper.isBetween(y2, y1, y1 + height1) || Helper.isBetween(y2 + height2, y1, y1 + height1)))
+                                currentScene.onCollision(body1, body2);
+
+                        }
+                    }
                 }
             }
         }

@@ -7,7 +7,7 @@ import core.*;
  */
 public class GameScene extends Scene{
     public Sprite sprite;
-    public final int DIM_SIZE = 0;
+    public final int DIM_SIZE = 2;
     public int NUM_SPRITES = DIM_SIZE * DIM_SIZE;
     Sprite[] sprites = new Sprite[NUM_SPRITES];
     int wait;
@@ -36,23 +36,77 @@ public class GameScene extends Scene{
         sprite.resizeAnimation(resizedWidth, resizedHeight, false, 3);
         sprite.resizeAnimation(resizedWidth, resizedHeight, false, 4);
 
+        sprite.setCollideable(true);
+        sprite.setName("defaultSprite");
+
         int distance = 10;
 
         for(int i = 0; i < DIM_SIZE; i++) {
             for (int j = 0; j < DIM_SIZE; j++) {
                 sprites[j + i * DIM_SIZE] = new Sprite(sprite);
-                sprites[j + i * DIM_SIZE].setLocation(i * distance + distance, j * distance + distance);
-            }
+                sprites[j + i * DIM_SIZE].setLocation(i * distance + distance + 100, j * distance + distance + 100);
+                sprites[j + i * DIM_SIZE].setName("sprite: " +  (j + i * DIM_SIZE));
+        }
         }
 
         //removeSprite(sprite);
         sprite.setLocation(sprite.getX(), sprite.getY());
+        sprite.setCheckCollisions(true);
         //End load screen.
     }
 
     @Override
     public void update(){
         flag = false;
+
+        if(Kernel.keyListener.isKeyPressed(39)){
+            sprite.setLocation(sprite.getX() + 2, sprite.getY());
+            if(sprite.currentAnimation == 1) {
+                sprite.nextAnimationFrame(1);
+            } else {
+                sprite.resetAnimation(1);
+                sprite.selectAnimation(1);
+            }
+            flag = true;
+        }
+
+        if(Kernel.keyListener.isKeyPressed(38)){
+            sprite.setLocation(sprite.getX(), sprite.getY() - 2);
+            if(sprite.currentAnimation == 2) {
+                sprite.nextAnimationFrame(2);
+            } else {
+                sprite.resetAnimation(2);
+                sprite.selectAnimation(2);
+            }
+            flag = true;
+        }
+
+        if(Kernel.keyListener.isKeyPressed(40)){
+            sprite.setLocation(sprite.getX(), sprite.getY() + 2);
+            if(sprite.currentAnimation == 3) {
+                sprite.nextAnimationFrame(3);
+            } else {
+                sprite.resetAnimation(3);
+                sprite.selectAnimation(3);
+            }
+            flag = true;
+        }
+
+        if(Kernel.keyListener.isKeyPressed(37)){
+            sprite.setLocation(sprite.getX() - 2, sprite.getY());
+            if(sprite.currentAnimation == 4) {
+                sprite.nextAnimationFrame(4);
+            } else {
+                sprite.resetAnimation(4);
+                sprite.selectAnimation(4);
+            }
+            flag = true;
+        }
+
+        if(flag == false){
+            sprite.resetToDefault();
+        }
+        /*flag = false;
 
         if(Kernel.keyListener.isKeyPressed(39)){
             sprite.setLocation(sprite.getX() + 2, sprite.getY());
@@ -146,6 +200,11 @@ public class GameScene extends Scene{
             for(int i = 0; i < NUM_SPRITES; i++){
                 sprites[i].resetToDefault();
             }
-        }
+        }*/
+    }
+
+    @Override
+    public void onCollision(Sprite body1, Sprite body2){
+        System.out.println("Collided: " + body1.getName() + " + " + body2.getName());
     }
 }
