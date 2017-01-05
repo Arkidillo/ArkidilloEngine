@@ -7,7 +7,7 @@ import core.*;
  */
 public class GameScene extends Scene{
     public Sprite sprite;
-    public final int DIM_SIZE = 2;
+    public final int DIM_SIZE = 1;
     public int NUM_SPRITES = DIM_SIZE * DIM_SIZE;
     Sprite[] sprites = new Sprite[NUM_SPRITES];
     int wait;
@@ -16,7 +16,7 @@ public class GameScene extends Scene{
     @Override
     public void onCreate(){
         //Start load screen.
-        sprite = new Sprite(0,0,"linkFront.png", this);
+        sprite = new Sprite(500,500,"linkFront.png", this);
 
         String[] frames = {"linkFront.png", "linkFront2.png"};
         String[] framesLeft = {"linkLeft.png", "linkLeft2.png"};
@@ -46,7 +46,17 @@ public class GameScene extends Scene{
                 sprites[j + i * DIM_SIZE] = new Sprite(sprite);
                 sprites[j + i * DIM_SIZE].setLocation(i * distance + distance + 100, j * distance + distance + 100);
                 sprites[j + i * DIM_SIZE].setName("sprite: " +  (j + i * DIM_SIZE));
+                sprites[j + i * DIM_SIZE].setVelocityFramesPerPixel(2, 0);
+                sprites[j + i * DIM_SIZE].startAnimation(1);
+                sprites[j + i * DIM_SIZE].animations.get(1).animationDelay = 60;
+
+            }
         }
+
+        for(int i = 0; i < DIM_SIZE; i++) {
+            for (int j = 0; j < DIM_SIZE; j++) {
+                sprites[j + i * DIM_SIZE].setLocation(200, 200);
+            }
         }
 
         //removeSprite(sprite);
@@ -205,10 +215,10 @@ public class GameScene extends Scene{
 
     @Override
     public void onCollision(Sprite body1, Sprite body2){
-        System.out.println("Collided: " + body1.getName() + " + " + body2.getName());
-        if(body1.getName() == "defaultSprite"){
+        //System.out.println("Collided: " + body1.getName() + " + " + body2.getName());
+        if(body1.getName().equals("defaultSprite")){
             body1.setLocation(800, 800);
-        } else if (body2.getName() == "defaultSprite"){
+        } else if (body2.getName().equals("defaultSprite")){
             body2.setLocation(800, 800);
         }
     }

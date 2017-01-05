@@ -23,8 +23,14 @@ public class Sprite extends JLabel implements Runnable {
     public double speed;
     public int directionAngle;  //Radians
 
-    //TODO: Collisions
-    //TODO: Simple physics
+    public int waitX;
+    public int waitY;
+    public int currentWaitX;
+    public int currentWaitY;
+    public int velX;
+    public int velY;
+
+    //TODO: Simple physics - change velocity to pixels/ second
 
     public Sprite(int x, int y, String fileName, Scene s){
         scene = s;
@@ -47,6 +53,14 @@ public class Sprite extends JLabel implements Runnable {
         currentAnimation = s.currentAnimation;
         speed = s.speed;
         directionAngle = s.directionAngle;
+
+        waitX = s.waitX;
+        waitY = s.waitY;
+        currentWaitX = s.currentWaitX;
+        currentWaitY = s.currentWaitY;
+        velX = s.velX;
+        velY = s.velY;
+
         if(s.checkCollisions){
             setCheckCollisions(true);
         }
@@ -73,14 +87,35 @@ public class Sprite extends JLabel implements Runnable {
     }
 
     public void run(){
-        setLocation(getX(), getY());
         update();
+        if(animate){
+            animations.get(currentAnimation).nextAnimationFrame();
+        }
         if (needToRepaint){
             repaint();
             needToRepaint = false;
         }
-        if(speed > 0.5){  //check if velocity is essentially 0
-            move();
+        if(speed > 0.000001){
+            if(currentWaitX == 0 && currentWaitY == 0 && !(velX == 0 && velY == 0)){
+                move();
+                currentWaitX = waitX;
+                currentWaitY = waitY;
+                return;
+            }
+
+            if (currentWaitY == 0 && velY != 0){
+                setLocation(getX(), getY() + velY);
+                currentWaitY = waitY;
+            } else {
+                currentWaitY--;
+            }
+
+            if(currentWaitX == 0 && velX != 0) {
+                setLocation(getX() + velX, getY());
+                currentWaitX = waitX;
+            } else {
+                currentWaitX--;
+            }
         }
     }
 
@@ -255,15 +290,51 @@ public class Sprite extends JLabel implements Runnable {
         }
     }
 */
-    public void setVelocity(int pixelsPerSecond, int radians){
-        speed = pixelsPerSecond;
+    public void setVelocityPixelsPerFrame(int pixelsPerFrame, int radians){
+        speed = pixelsPerFrame;
         directionAngle = radians;
+        velX = (int)(Math.round(Math.cos(directionAngle) * speed));
+        velY = (int)(Math.round(Math.sin(directionAngle) * speed));
+
+        waitX = 0;
+        waitY = 0;
+        currentWaitX = 0;
+        currentWaitY = 0;
+    }
+
+    public void setVelocityFramesPerPixel(int framesPerPixel, int radians){
+        directionAngle = radians;
+        speed = 1.0/framesPerPixel;  //= pixels per second
+
+        double xComponent = Math.cos(radians) * speed;  //gets the pixels per second in the x and y directions
+        double yComponent = Math.sin(radians) * speed;
+
+        if(xComponent > 0.00001) {
+            double framesPerPixelX = 1 / xComponent; //gets seconds per pixel in the x and y directions.
+            waitX = (int)Math.round(framesPerPixelX);
+            velX = 1;   //After the number of frames calculated here ^, move 1 pixel
+        } else {
+            velX = 0;
+            waitX = 0;
+        }
+
+        if (yComponent > 0.00001) {
+            double framesPerPixelY = 1 / yComponent;
+            waitY = (int)Math.round(framesPerPixelY);
+            velY = 1;
+        } else {
+            velY = 0;
+            waitY = 0;
+        }
+
+        currentWaitX = waitX;
+        currentWaitY = waitY;
+
+        System.out.println("waitX: " + waitX);
+        System.out.println("waitY: " + waitY);
     }
 
     private void move(){
-        int xVector = (int)(Math.round(Math.cos(directionAngle) * speed));
-        int yVector = (int)(Math.round(Math.sin(directionAngle) * speed));
-
-        setLocation(getX() + xVector, getY() + yVector);
+        setLocation(getX() + velX, getY() + velY);
     }
 }
