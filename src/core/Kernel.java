@@ -103,21 +103,28 @@ public class Kernel implements Runnable{
                         else if (Helper.isBetween(x2, x1, x1 + width1) && (Helper.isBetween(y2, y1, y1 + height1) || Helper.isBetween(y2 + height2, y1, y1 + height1)))
                             currentScene.onCollision(body1, body2);
                         if (!body2.checkCollisions) {
-                            Sprite temp = body1;
-                            body1 = body2;
-                            body2 = temp;
+                            //Do the same operation, using the other body as body1. This is necessary to remove double collisions.
+                            int tempX = body2.getX();
+                            int tempY = body2.getY();
+                            int tempW = body2.getWidth();
+                            int tempH = body2.getHeight();
 
-                            if (x1 + width1 == x2 && (Helper.isBetween(y1, y2, y2 + height1) || Helper.isBetween(y2, y1, y1 + height1) || y1 == y2))
+                            x2 = body1.getX();
+                            y2 = body1.getY();
+                            width2 = body1.getWidth();
+                            height2 = body1.getHeight();
+
+                            if (tempX + tempW == x2 && (Helper.isBetween(tempY, y2, y2 + tempH) || Helper.isBetween(y2, tempY, tempY + tempH) || tempY == y2))
                                 currentScene.onCollision(body1, body2);
-                            else if (y1 + height1 == y2 && (Helper.isBetween(x1, x2, x2 + width2) || Helper.isBetween(x2, x1, x1 + width1) || x1 == x2))
+                            else if (tempY + tempH == y2 && (Helper.isBetween(tempX, x2, x2 + width2) || Helper.isBetween(x2, tempX, tempX + tempW) || tempX == x2))
                                 currentScene.onCollision(body1, body2);
-                            else if (y1 + height1 == y2 && x1 + width1 == x2)
+                            else if (tempY + tempH == y2 && tempX + tempW == x2)
                                 currentScene.onCollision(body1, body2);
-                            else if (y1 == y2 + height2 && x1 + width1 == x2)
+                            else if (tempY == y2 + height2 && tempX + tempW == x2)
                                 currentScene.onCollision(body1, body2);
-                            else if (x1 == x2 && y1 == y2)
+                            else if (tempX == x2 && tempY == y2)
                                 currentScene.onCollision(body1, body2);
-                            else if (Helper.isBetween(x2, x1, x1 + width1) && (Helper.isBetween(y2, y1, y1 + height1) || Helper.isBetween(y2 + height2, y1, y1 + height1)))
+                            else if (Helper.isBetween(x2, tempX, tempX + tempW) && (Helper.isBetween(y2, tempY, tempY + tempH) || Helper.isBetween(y2 + height2, tempY, tempY + tempH)))
                                 currentScene.onCollision(body1, body2);
 
                         }

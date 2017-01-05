@@ -206,5 +206,10 @@ public class GameScene extends Scene{
     @Override
     public void onCollision(Sprite body1, Sprite body2){
         System.out.println("Collided: " + body1.getName() + " + " + body2.getName());
+        if(body1.getName() == "defaultSprite"){
+            body1.setLocation(800, 800);
+        } else if (body2.getName() == "defaultSprite"){
+            body2.setLocation(800, 800);
+        }
     }
 }

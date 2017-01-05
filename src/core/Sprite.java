@@ -103,7 +103,7 @@ public class Sprite extends JLabel implements Runnable {
             scene.collideableSprites.add(this);
         else
             scene.collideableSprites.remove(this);
-        scene.addCollideableSpriteLabel(this);
+        System.out.println("setting collisions to be true");
     }
 
     public void setCheckCollisions(boolean checkCollisions){
@@ -112,6 +112,7 @@ public class Sprite extends JLabel implements Runnable {
             scene.checkCollideableSprites.add(this);
         else
             scene.checkCollideableSprites.remove(this);
+        System.out.println("setting check collisions to be true");
     }
 
     public void redraw(){   //Redraws the sprite on the next frame.
