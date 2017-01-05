@@ -46,7 +46,7 @@ public class GameScene extends Scene{
                 sprites[j + i * DIM_SIZE] = new Sprite(sprite);
                 sprites[j + i * DIM_SIZE].setLocation(i * distance + distance + 100, j * distance + distance + 100);
                 sprites[j + i * DIM_SIZE].setName("sprite: " +  (j + i * DIM_SIZE));
-                sprites[j + i * DIM_SIZE].setVelocityFramesPerPixel(2, 0);
+                sprites[j + i * DIM_SIZE].setVelocityPixelsPerFrame(2, 0);
                 sprites[j + i * DIM_SIZE].startAnimation(1);
                 sprites[j + i * DIM_SIZE].animations.get(1).animationDelay = 60;
 

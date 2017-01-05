@@ -96,26 +96,7 @@ public class Sprite extends JLabel implements Runnable {
             needToRepaint = false;
         }
         if(speed > 0.000001){
-            if(currentWaitX == 0 && currentWaitY == 0 && !(velX == 0 && velY == 0)){
-                move();
-                currentWaitX = waitX;
-                currentWaitY = waitY;
-                return;
-            }
-
-            if (currentWaitY == 0 && velY != 0){
-                setLocation(getX(), getY() + velY);
-                currentWaitY = waitY;
-            } else {
-                currentWaitY--;
-            }
-
-            if(currentWaitX == 0 && velX != 0) {
-                setLocation(getX() + velX, getY());
-                currentWaitX = waitX;
-            } else {
-                currentWaitX--;
-            }
+            simulate();
         }
     }
 
@@ -138,7 +119,6 @@ public class Sprite extends JLabel implements Runnable {
             scene.collideableSprites.add(this);
         else
             scene.collideableSprites.remove(this);
-        System.out.println("setting collisions to be true");
     }
 
     public void setCheckCollisions(boolean checkCollisions){
@@ -147,7 +127,6 @@ public class Sprite extends JLabel implements Runnable {
             scene.checkCollideableSprites.add(this);
         else
             scene.checkCollideableSprites.remove(this);
-        System.out.println("setting check collisions to be true");
     }
 
     public void redraw(){   //Redraws the sprite on the next frame.
@@ -291,50 +270,78 @@ public class Sprite extends JLabel implements Runnable {
     }
 */
     public void setVelocityPixelsPerFrame(int pixelsPerFrame, int radians){
-        speed = pixelsPerFrame;
-        directionAngle = radians;
-        velX = (int)(Math.round(Math.cos(directionAngle) * speed));
-        velY = (int)(Math.round(Math.sin(directionAngle) * speed));
+        if(pixelsPerFrame != 0) {
+            speed = pixelsPerFrame;
+            directionAngle = radians;
+            velX = (int) (Math.round(Math.cos(directionAngle) * speed));
+            velY = (int) (Math.round(Math.sin(directionAngle) * speed));
 
-        waitX = 0;
-        waitY = 0;
-        currentWaitX = 0;
-        currentWaitY = 0;
+            waitX = 0;
+            waitY = 0;
+            currentWaitX = 0;
+            currentWaitY = 0;
+        } else {
+            speed = 0;
+        }
     }
 
     public void setVelocityFramesPerPixel(int framesPerPixel, int radians){
-        directionAngle = radians;
-        speed = 1.0/framesPerPixel;  //= pixels per second
+        if(framesPerPixel != 0) {
+            directionAngle = radians;
+            speed = 1.0 / framesPerPixel;  //= pixels per second
 
-        double xComponent = Math.cos(radians) * speed;  //gets the pixels per second in the x and y directions
-        double yComponent = Math.sin(radians) * speed;
+            double xComponent = Math.cos(radians) * speed;  //gets the pixels per second in the x and y directions
+            double yComponent = Math.sin(radians) * speed;
 
-        if(xComponent > 0.00001) {
-            double framesPerPixelX = 1 / xComponent; //gets seconds per pixel in the x and y directions.
-            waitX = (int)Math.round(framesPerPixelX);
-            velX = 1;   //After the number of frames calculated here ^, move 1 pixel
+            if (xComponent > 0.00001) {
+                double framesPerPixelX = 1 / xComponent; //gets seconds per pixel in the x and y directions.
+                waitX = (int) Math.round(framesPerPixelX);
+                velX = 1;   //After the number of frames calculated here ^, move 1 pixel
+            } else {
+                velX = 0;
+                waitX = 0;
+            }
+
+            if (yComponent > 0.00001) {
+                double framesPerPixelY = 1 / yComponent;
+                waitY = (int) Math.round(framesPerPixelY);
+                velY = 1;
+            } else {
+                velY = 0;
+                waitY = 0;
+            }
+
+            currentWaitX = waitX;
+            currentWaitY = waitY;
         } else {
-            velX = 0;
-            waitX = 0;
+            speed = 0;
         }
-
-        if (yComponent > 0.00001) {
-            double framesPerPixelY = 1 / yComponent;
-            waitY = (int)Math.round(framesPerPixelY);
-            velY = 1;
-        } else {
-            velY = 0;
-            waitY = 0;
-        }
-
-        currentWaitX = waitX;
-        currentWaitY = waitY;
-
-        System.out.println("waitX: " + waitX);
-        System.out.println("waitY: " + waitY);
     }
 
     private void move(){
         setLocation(getX() + velX, getY() + velY);
+    }
+
+    private void simulate(){
+        if(currentWaitX == 0 && currentWaitY == 0 && !(velX == 0 && velY == 0)){
+            move();
+            currentWaitX = waitX;
+            currentWaitY = waitY;
+            return;
+        }
+
+        if (currentWaitY == 0 && velY != 0){
+            setLocation(getX(), getY() + velY);
+            currentWaitY = waitY;
+        } else {
+            currentWaitY--;
+        }
+
+        if(currentWaitX == 0 && velX != 0) {
+            setLocation(getX() + velX, getY());
+            currentWaitX = waitX;
+        } else {
+            currentWaitX--;
+        }
     }
 }
