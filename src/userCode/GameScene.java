@@ -10,7 +10,6 @@ public class GameScene extends Scene{
     public final int DIM_SIZE = 1;
     public int NUM_SPRITES = DIM_SIZE * DIM_SIZE;
     Sprite[] sprites = new Sprite[NUM_SPRITES];
-    int wait;
     boolean flag = false;
 
     @Override

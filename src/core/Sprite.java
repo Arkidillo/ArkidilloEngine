@@ -31,6 +31,7 @@ public class Sprite extends JLabel implements Runnable {
     public int velY;
 
     //TODO: Simple physics - change velocity to pixels/ second
+    //TODO: Add z-axis using JLayeredPanel
 
     public Sprite(int x, int y, String fileName, Scene s){
         scene = s;
@@ -343,5 +344,8 @@ public class Sprite extends JLabel implements Runnable {
         } else {
             currentWaitX--;
         }
+    }
+
+    public void onCollision(Sprite body1, Sprite body2){    //The user can overwrite this for any custom children of the Sprite class, to handle collisions for that object
     }
 }
