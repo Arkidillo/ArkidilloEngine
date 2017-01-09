@@ -30,8 +30,7 @@ public class Sprite extends JLabel implements Runnable {
     public int velX;
     public int velY;
 
-    //TODO: Simple physics - change velocity to pixels/ second
-    //TODO: Add z-axis using JLayeredPanel
+    //TODO: Simple physics - add acceleration?
 
     public Sprite(int x, int y, String fileName, Scene s){
         scene = s;
