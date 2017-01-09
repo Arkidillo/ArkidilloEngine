@@ -71,6 +71,16 @@ public class Animation {
         }
     }
 
+    public void startAnimation(){
+        currentFrame = 0;
+        nextFrame(); //Then you go to the next frame in the animation
+        if(animationDelays.size() != 0) {   //if you are using the dynamic frame delay, go to the next frame's delay
+            currentDelay = animationDelays.get(currentFrame);
+        } else {//else, set the delay back up to the given frame delay amount
+            currentDelay = animationDelay;
+        }
+    }
+
     public void nextFrame(){//Sets the image to the next frame of the animation.
         sprite.image = animationFrames.get((++currentFrame)%animationFrames.size());
         sprite.setIcon(sprite.image);

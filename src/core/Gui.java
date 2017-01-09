@@ -9,11 +9,14 @@ import java.awt.event.KeyListener;
  */
 public class Gui {
     public JFrame frame;
+    public JLayeredPane panel;
     public double width;
     public double height;
 
     public Gui(){
         frame = new JFrame();   //Create a new JFrame and JPanel. JPanel necessary to actually draw things to.
+        panel = new JLayeredPane();
+        panel.setPreferredSize(new Dimension(1920, 1080));
 
         //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setPreferredSize(new Dimension(1920, 1080));
@@ -27,6 +30,7 @@ public class Gui {
 
         width = frame.getWidth();
         height = frame.getHeight();
+        frame.add(panel);
         frame.pack();
     }
 
@@ -35,10 +39,10 @@ public class Gui {
     }
 
     public void add(Sprite sprite){
-        frame.add(sprite);
+        panel.add(sprite);
     }
 
     public void remove(Sprite sprite){
-        frame.remove(sprite);
+        panel.remove(sprite);
     }
 }

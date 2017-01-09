@@ -45,7 +45,7 @@ public class GameScene extends Scene{
                 sprites[j + i * DIM_SIZE] = new Sprite(sprite);
                 sprites[j + i * DIM_SIZE].setLocation(i * distance + distance + 100, j * distance + distance + 100);
                 sprites[j + i * DIM_SIZE].setName("sprite: " +  (j + i * DIM_SIZE));
-                sprites[j + i * DIM_SIZE].setVelocityPixelsPerFrame(2, 0);
+                //sprites[j + i * DIM_SIZE].setVelocityPixelsPerFrame(2, 0);
                 sprites[j + i * DIM_SIZE].startAnimation(1);
                 sprites[j + i * DIM_SIZE].animations.get(1).animationDelay = 60;
 
@@ -61,6 +61,9 @@ public class GameScene extends Scene{
         //removeSprite(sprite);
         sprite.setLocation(sprite.getX(), sprite.getY());
         sprite.setCheckCollisions(true);
+
+        sprite.setZPosition(0);
+        sprites[0].setZPosition(100);
         //End load screen.
     }
 
@@ -212,7 +215,7 @@ public class GameScene extends Scene{
         }*/
     }
 
-    @Override
+    /*@Override
     public void onCollision(Sprite body1, Sprite body2){
         //System.out.println("Collided: " + body1.getName() + " + " + body2.getName());
         if(body1.getName().equals("defaultSprite")){
@@ -220,5 +223,5 @@ public class GameScene extends Scene{
         } else if (body2.getName().equals("defaultSprite")){
             body2.setLocation(800, 800);
         }
-    }
+    }*/
 }
