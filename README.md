@@ -25,6 +25,6 @@ Create a `Sprite` object, by passing the object its location, an image file, and
     - `keyPressed/keyReleased/keyTyed(int keyCode)`: Triggered for each of these key events  
     - `setCollideable(boolean collideable)`: Tell the sprite whether it should be checked for collisions  
     - `onCollision(Sprite sprite1)`: Called when 2 collideable sprites collide  
+    - Physics API: Various functions that can offload movement calculations to the engine rather than needing to be coded  
     - Animation API: Various functions that allow you to setup and advance through animation frames
-
-### Keylistener
+    
